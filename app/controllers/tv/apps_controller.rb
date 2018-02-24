@@ -1,12 +1,7 @@
-module Tv
-  class AppsController < ApplicationController
+class Tv::AppsController < Tv::BaseController
 
-    def index
-      logger.info { "-------------" }
-      logger.info { ActionController::Base.helpers.asset_path("tv.js") }
-      logger.info { "-------------" }
-      head :ok
-    end
-
+  def index
+    redirect_to helpers.asset_url("tv.js")
   end
+
 end
