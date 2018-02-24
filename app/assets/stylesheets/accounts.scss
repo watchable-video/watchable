@@ -1,3 +1,43 @@
-// Place all the styles related to the accounts controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+$color1: rgba(28, 35, 33, 1);
+$color2: rgba(125, 152, 161, 1);
+$color3: rgba(94, 101, 114, 1);
+$color4: rgba(169, 180, 194, 1);
+$color5: rgba(238, 241, 239, 1);
+
+*,*:before,*:after {
+  box-sizing: border-box;
+}
+
+body, html {
+    background-color: $color1;
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
+    height: 100%;
+}
+form {
+    min-width: 800px;
+
+}
+label {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    font-size: 10rem;
+    font-weight: bold;
+    color: rgba(238, 241, 239, .1);
+}
+input {
+    font-size: 5rem;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.actions {
+    visibility: hidden;
+}

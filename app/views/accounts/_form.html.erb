@@ -1,16 +1,8 @@
 <%= form_with(model: account, local: true) do |form| %>
-    <% if account.errors.any? %>
-        <div id="error_explanation">
-            <h2><%= pluralize(account.errors.count, "error") %> prohibited this account from being saved:</h2>
-
-            <ul>
-                <% account.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-            </ul>
-        </div>
-    <% end %>
-
+    <label>
+        Tube
+        <%= form.text_field :cloudkit_id, placeholder: "CloudKit Token" %>
+    </label>
     <div class="actions">
         <%= form.submit %>
     </div>

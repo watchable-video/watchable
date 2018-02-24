@@ -8,5 +8,6 @@ Rails.application.routes.draw do
 
   namespace :tv do
     resources :apps
+    resources :videos
   end
 end
