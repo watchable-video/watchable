@@ -1,3 +1,3 @@
-window.App.onLaunch = (options) ->
-  alert = new Alert "Hello!", "It's working!"
-  navigationDocument.presentModal(alert);
+this.App.onLaunch = (options) ->
+  modal = alert("Hello!", "It's working!")
+  navigationDocument.presentModal(modal);
