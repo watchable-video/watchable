@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :oauth_two_authorizations do
+
+  resources :accounts do
     collection do
       get :save
     end
