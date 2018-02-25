@@ -1,1 +1,2 @@
-json.extract! video, :youtube_id, :video_published_at, :progress, :watched, :data
+json.date video.video_published_at.strftime("%B %e")
+json.extract! video, :youtube_id, :progress, :watched, :data

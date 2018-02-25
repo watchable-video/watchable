@@ -31,12 +31,26 @@ class RefreshJob < ApplicationJob
           hash[attribute] = video.send(attribute)
         end
         hash[:hd] = video.hd?
-        hash[:thumbnail_url] = video.thumbnail_url(:high)
+        hash[:thumbnail_url] = image_url(video.thumbnail_url(:high))
       end
     end
 
     def client
       Yt::Account.new access_token: account.google_access_token, refresh_token: account.google_refresh_token
+    end
+
+    def image_url(url)
+      max_url = url.sub("hqdefault", "maxresdefault")
+      image_exists?(max_url) ? max_url : url
+    end
+
+    def image_exists?(url)
+      url = URI.parse(url)
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true
+      request = Net::HTTP::Head.new(url.request_uri)
+      response = http.request(request)
+      response.code == "200"
     end
 
 end
