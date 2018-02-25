@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2018_02_25_013742) do
     t.string "youtube_id", null: false
     t.string "cloudkit_id", null: false
     t.datetime "video_published_at", null: false
+    t.integer "progress", default: 0, null: false
+    t.boolean "watched", default: false, null: false
     t.jsonb "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

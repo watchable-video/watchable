@@ -4,6 +4,7 @@ class Tv::BaseController < ApplicationController
 
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
+  before_action :authorize
 
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
@@ -22,5 +23,13 @@ class Tv::BaseController < ApplicationController
       render text: '', :content_type => 'text/plain'
     end
   end
+
+  def authorize
+    @account = Account.where(cloudkit_id: params[:cloudkit_id]).take!
+  end
+
+  # def bearer_token
+  #   request.headers["Authorization"] && request.headers["Authorization"].sub("Bearer").trim
+  # end
 
 end

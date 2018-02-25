@@ -1,5 +1,7 @@
 class Account < ApplicationRecord
 
+  has_many :videos, foreign_key: :cloudkit_id, primary_key: :cloudkit_id
+
   def self.create_from_yt!(cloudkit_id, account)
     params = {
       cloudkit_id: cloudkit_id,

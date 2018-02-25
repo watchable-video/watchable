@@ -6,28 +6,33 @@ class RefreshJob < ApplicationJob
   def perform(account_id)
     @account = Account.find(account_id)
     client.subscribed_channels.each do |channel|
-      channel.videos.where(max_results: 3).includes(:content_details).each do |video|
-        Video.create(build(video))
+      videos = channel.videos.where(max_results: 3).includes(:content_details).map do |data|
+        build_video(data)
       end
+      Video.import videos, on_duplicate_key_update: {conflict_target: [:cloudkit_id, :youtube_id], columns: [:data]}
     end
   end
 
   private
 
-    def build(video)
-      attributes = %I[title description duration view_count like_count channel_title]
-      data = attributes.each_with_object({}) do |attribute, hash|
-        hash[attribute] = video.send(attribute)
-      end
-      data[:hd] = video.hd?
-      data[:thumbnail_url] = video.thumbnail_url(:high)
-
-      {
-        youtube_id: video.id,
+    def build_video(data)
+      Video.new(
+        youtube_id: data.id,
         cloudkit_id: account.cloudkit_id,
-        video_published_at: video.published_at,
-        data: data
-      }
+        video_published_at: data.published_at,
+        data: build_data(data)
+      )
+    end
+
+    def build_data(video)
+      attributes = %I[title description duration view_count like_count channel_title]
+      Hash.new.tap do |hash|
+        attributes.each do |attribute|
+          hash[attribute] = video.send(attribute)
+        end
+        hash[:hd] = video.hd?
+        hash[:thumbnail_url] = video.thumbnail_url(:high)
+      end
     end
 
     def client

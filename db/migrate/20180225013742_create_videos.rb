@@ -4,6 +4,8 @@ class CreateVideos < ActiveRecord::Migration[5.2]
       t.string :youtube_id, null: false
       t.string :cloudkit_id, null: false
       t.datetime :video_published_at, null: false
+      t.integer :progress, null: false, default: 0
+      t.boolean :watched, null: false, default: false
       t.jsonb :data
 
       t.timestamps

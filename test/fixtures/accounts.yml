@@ -1,0 +1,6 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cloudkit_id: "cloudkit_id"
+  google_access_token: "google_access_token"
+  google_refresh_token: "google_refresh_token"
