@@ -14,7 +14,8 @@ ActiveRecord::Schema.define(version: 2018_02_24_195705) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "cloudkit_id", null: false
-    t.string "google_code", null: false
+    t.string "google_access_token", null: false
+    t.string "google_refresh_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cloudkit_id"], name: "index_accounts_on_cloudkit_id", unique: true

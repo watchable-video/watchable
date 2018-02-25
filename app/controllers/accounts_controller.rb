@@ -11,11 +11,7 @@ class AccountsController < ApplicationController
 
   def save
     account = Yt::Account.new authorization_code: params[:code], redirect_uri: redirect_uri
-    logger.info { "----------------------" }
-    logger.info { account.access_token.inspect }
-    logger.info { account.authentication.inspect }
-    logger.info { "----------------------" }
-    # Account.create!(cloudkit_id: session[:cloudkit_id], google_code: )
+    Account.create_from_yt!(session[:cloudkit_id], account)
     head :ok
   end
 
