@@ -7,7 +7,7 @@ end
 
 
 gem "rails", "~> 5.2.0.rc1"
-gem "sqlite3"
+gem "pg"
 gem "puma", "~> 3.7"
 gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 1.3.0"
@@ -17,6 +17,7 @@ gem "jbuilder", "~> 2.5"
 gem "bcrypt", "~> 3.1.7"
 gem "yt"
 gem 'dotenv-rails'
+gem 'sidekiq'
 
 
 group :development, :test do
