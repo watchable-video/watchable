@@ -1,8 +1,7 @@
 this.shelf = (videos) ->
-  console.log videos
-  lockups = videos.map (video) ->
+  lockups = videos.map (video, index) ->
     """
-    <lockup>
+    <lockup index="#{index}">
       <img src="#{video.data.thumbnail_url}" width="960" height="540" />
       <title><![CDATA[#{video.data.title}]]></title>
       <subtitle><![CDATA[#{video.data.channel_title} - #{video.date}]]></subtitle>
