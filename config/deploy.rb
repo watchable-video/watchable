@@ -64,7 +64,7 @@ namespace :app do
   task :reload do
     on roles(:app) do
       within release_path do
-        execute :sudo, :systemctl, :kill, "-s SIGUSR1", "--kill-who=main", "'app-web@*.service'"
+        execute :sudo, :systemctl, :kill, "-s SIGUSR2", "--kill-who=main", "'app-web@*.service'"
         execute :sudo, :systemctl, :restart, "'app-worker@*.service'"
         execute :sudo, :systemctl, :restart, "'app-clock@*.service'"
       end
@@ -84,5 +84,5 @@ namespace :app do
 end
 
 before "deploy", "app:quiet"
-after "deploy:published", "app:systemd"
-# after "app:systemd", "app:restart"
+after "deploy:published", "app:export"
+after "app:export", "app:reload"
