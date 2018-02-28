@@ -6,11 +6,11 @@ set :application, "tube"
 set :repo_url, "git@github.com:feedbin/#{fetch(:application)}.git"
 set :deploy_to, "/srv/apps/#{fetch(:application)}"
 set :rbenv_type, :system
+set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 set :log_level, :warn
 
 # Rails
 set :assets_roles, [:app]
-set :keep_assets, 2
 set :conditionally_migrate, true
 
 append :linked_files, "config/database.yml", "config/secrets.yml"
@@ -20,7 +20,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 namespace :app do
   desc "Start web server"
   task :start do
-    on roles(:web) do |host|
+    on roles(:app) do |host|
       within release_path do
         execute :sudo, :systemctl, :start, "app-web@5000.service"
         execute :sudo, :systemctl, :start, "app-worker@5001.service"
@@ -31,7 +31,7 @@ namespace :app do
 
   desc "Stop web server"
   task :stop do
-    on roles(:web) do |host|
+    on roles(:app) do |host|
       within release_path do
         execute :sudo, :systemctl, :stop, "app-web@5000.service"
         execute :sudo, :systemctl, :stop, "app-worker@5001.service"
@@ -42,7 +42,7 @@ namespace :app do
 
   desc "Restart web server"
   task :restart do
-    on roles(:web) do |host|
+    on roles(:app) do |host|
       within release_path do
         execute :sudo, :systemctl, :restart, "app-web@5000.service"
         execute :sudo, :systemctl, :restart, "app-worker@5001.service"
@@ -53,14 +53,14 @@ namespace :app do
 
   desc "Reload systemd"
   task :systemd do
-    on roles(:web) do
+    on roles(:app) do
       within release_path do
-        execute :sudo, :foreman, :export, :systemd, "/etc/systemd/system", "--user app"
+        execute :sudo, :bundle, :exec, :foreman, :export, :systemd, "/etc/systemd/system", "--user app"
         execute :sudo, :systemctl, "daemon-reload"
       end
     end
   end
 end
 
-after 'deploy:publishing', 'app:systemd'
+after 'deploy:published', 'app:systemd'
 after 'app:systemd', 'app:restart'
