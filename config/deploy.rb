@@ -74,8 +74,8 @@ namespace :app do
   desc "Export systemd"
   task :export do
     on roles(:app) do
-      within release_path do
-        execute :sudo, "/usr/local/rbenv/shims/foreman", :export, :systemd, "/etc/systemd/system", "--user app"
+      within current_path do
+        execute :sudo, "/usr/local/rbenv/shims/foreman", :export, :systemd, "/etc/systemd/system", "--user app", "--root /srv/apps/tube/current"
         execute :sudo, :systemctl, "daemon-reload"
       end
     end
@@ -84,4 +84,5 @@ namespace :app do
 end
 
 before "deploy", "app:quiet"
-after "deploy:published", "app:reload"
+after "deploy:published", "app:systemd"
+# after "app:systemd", "app:restart"
