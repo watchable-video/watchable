@@ -6,7 +6,7 @@ set :application, "tube"
 set :repo_url, "git@github.com:feedbin/#{fetch(:application)}.git"
 set :deploy_to, "/srv/apps/#{fetch(:application)}"
 set :rbenv_type, :system
-set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
+set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl foreman}
 set :log_level, :warn
 
 # Rails
@@ -55,7 +55,7 @@ namespace :app do
   task :systemd do
     on roles(:app) do
       within release_path do
-        execute :sudo, "/usr/local/rbenv/shims/foreman", :export, :systemd, "/etc/systemd/system", "--user app"
+        execute :sudo, :foreman, :export, :systemd, "/etc/systemd/system", "--user app"
         execute :sudo, :systemctl, "daemon-reload"
       end
     end
