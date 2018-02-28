@@ -7,9 +7,14 @@
 threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 threads threads_count, threads_count
 
-# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-#
-port        ENV.fetch("PORT") { 3000 }
+app_dir = File.expand_path("../", __dir__)
+
+if ENV["RAILS_ENV"] == "production"
+  bind "unix://#{app_dir}/tmp/sockets/puma.sock"
+else
+  port ENV.fetch("PORT") { 3000 }
+end
+
 
 # Specifies the `environment` that Puma will run in.
 #
