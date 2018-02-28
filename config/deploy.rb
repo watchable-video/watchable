@@ -10,10 +10,10 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 set :log_level, :warn
 
 # Rails
-set :assets_roles, [:app]
+# set :assets_roles, [:app]
 set :conditionally_migrate, true
 
-append :linked_files, "config/database.yml", "config/secrets.yml"
+append :linked_files, "config/database.yml", "config/secrets.yml", ".env"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
 
@@ -55,7 +55,7 @@ namespace :app do
   task :systemd do
     on roles(:app) do
       within release_path do
-        execute :sudo, :bundle, :exec, :foreman, :export, :systemd, "/etc/systemd/system", "--user app"
+        execute :sudo, "/usr/local/rbenv/shims/foreman", :export, :systemd, "/etc/systemd/system", "--user app"
         execute :sudo, :systemctl, "daemon-reload"
       end
     end
