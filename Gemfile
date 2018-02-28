@@ -19,7 +19,8 @@ gem "dotenv-rails"
 gem "sidekiq"
 gem "activerecord-import"
 gem "foreman"
-gem 'clockwork'
+gem "clockwork"
+gem "dalli"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

@@ -88,6 +88,7 @@ GEM
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
     crass (1.0.3)
+    dalli (2.7.6)
     dotenv (2.2.1)
     dotenv-rails (2.2.1)
       dotenv (= 2.2.1)
@@ -239,6 +240,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   clockwork
   coffee-rails (~> 4.2)
+  dalli
   dotenv-rails
   foreman
   jbuilder (~> 2.5)
