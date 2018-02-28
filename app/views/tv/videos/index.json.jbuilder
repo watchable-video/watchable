@@ -1,1 +1,3 @@
-json.array! @videos, partial: 'tv/videos/video', as: :video
+json.cache! @videos do
+  json.partial! "tv/videos/video", collection: @videos, as: :video
+end
