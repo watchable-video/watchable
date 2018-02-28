@@ -3,8 +3,8 @@ class RefreshJob < ApplicationJob
 
   attr_reader :account
 
-  def perform(account_id)
-    @account = Account.find(account_id)
+  def perform(account)
+    @account = account
     client.subscribed_channels.each do |channel|
       videos = channel.videos.where(max_results: 3).includes(:content_details).map do |data|
         build_video(data)

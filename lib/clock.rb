@@ -4,5 +4,8 @@ require_relative '../config/environment'
 
 include Clockwork
 
-every(10.seconds, 'clockwork.very_frequent') do
+every(1.hour, 'clockwork.hourly') do
+  Account.find_each do |account|
+    RefreshJob.perform_later account
+  end
 end
