@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 gem "rails", "~> 5.2.0.rc1"
 gem "pg"
 gem "puma", "~> 3.7"
@@ -19,13 +18,16 @@ gem "yt"
 gem "dotenv-rails"
 gem "sidekiq"
 gem "activerecord-import"
-
+gem "foreman"
+gem 'clockwork'
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "capybara", "~> 2.13"
   gem "selenium-webdriver"
   gem "capistrano-rails"
+  gem 'capistrano-bundler'
+  gem 'capistrano-rbenv'
 end
 
 group :development do
