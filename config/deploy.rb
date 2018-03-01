@@ -10,7 +10,7 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 set :log_level, :warn
 
 # Rails
-# set :assets_roles, [:app]
+set :assets_roles, [:app]
 set :conditionally_migrate, true
 
 append :linked_files, "config/database.yml", "config/secrets.yml", ".env"
@@ -27,46 +27,29 @@ namespace :app do
     end
   end
 
-  desc "Start web server"
+  desc "Start processes"
   task :start do
     on roles(:app) do |host|
       within release_path do
-        execute :sudo, :systemctl, :start, "'app-web@*.service'"
-        execute :sudo, :systemctl, :start, "'app-worker@*.service'"
-        execute :sudo, :systemctl, :start, "'app-clock@*.service'"
+        execute :sudo, :systemctl, :start, "app.target"
       end
     end
   end
 
-  desc "Stop web server"
+  desc "Stop processes"
   task :stop do
     on roles(:app) do |host|
       within release_path do
-        execute :sudo, :systemctl, :stop, "'app-web@*.service'"
-        execute :sudo, :systemctl, :stop, "'app-worker@*.service'"
-        execute :sudo, :systemctl, :stop, "'app-clock@*.service'"
+        execute :sudo, :systemctl, :stop, "app.target"
       end
     end
   end
 
-  desc "Restart web server"
+  desc "Restart processes"
   task :restart do
     on roles(:app) do |host|
       within release_path do
-        execute :sudo, :systemctl, :restart, "'app-web@*.service'"
-        execute :sudo, :systemctl, :restart, "'app-worker@*.service'"
-        execute :sudo, :systemctl, :restart, "'app-clock@*.service'"
-      end
-    end
-  end
-
-  desc "Reload"
-  task :reload do
-    on roles(:app) do
-      within release_path do
-        execute :sudo, :systemctl, :kill, "-s SIGUSR2", "--kill-who=main", "'app-web@*.service'"
-        execute :sudo, :systemctl, :restart, "'app-worker@*.service'"
-        execute :sudo, :systemctl, :restart, "'app-clock@*.service'"
+        execute :sudo, :systemctl, :restart, "app.target"
       end
     end
   end
@@ -77,6 +60,7 @@ namespace :app do
       within current_path do
         execute :sudo, "/usr/local/rbenv/shims/foreman", :export, :systemd, "/etc/systemd/system", "--user app", "--root /srv/apps/tube/current"
         execute :sudo, :systemctl, "daemon-reload"
+        execute :sudo, :systemctl, :enable, "app.target"
       end
     end
   end
@@ -85,4 +69,4 @@ end
 
 before "deploy", "app:quiet"
 after "deploy:published", "app:export"
-after "app:export", "app:reload"
+after "app:export", "app:restart"
