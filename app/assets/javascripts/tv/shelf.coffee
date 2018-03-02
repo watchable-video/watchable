@@ -1,13 +1,4 @@
-this.shelf = (videos) ->
-  lockups = videos.map (video, index) ->
-    """
-    <lockup index="#{index}">
-      <img src="#{video.data.thumbnail_url}" width="960" height="540" />
-      <title><![CDATA[#{video.data.title}]]></title>
-      <subtitle><![CDATA[#{video.data.channel_title} - #{video.date}]]></subtitle>
-    </lockup>
-    """
-
+this.shelf = ->
   template = """
   <?xml version="1.0" encoding="UTF-8"?>
   <document>
@@ -17,13 +8,19 @@ this.shelf = (videos) ->
       </banner>
       <collectionList>
         <shelf>
-          <section>
-            #{lockups.join("\n")}
-          </section>
+          <prototypes>
+            <lockup>
+              <img binding="@src:{data.thumbnail_url};" width="960" height="540" />
+              <title binding="textContent:{data.title};" />
+              <subtitle binding="textContent:{subtitle};" />
+            </lockup>
+          </prototypes>
+          <section binding="items:{items};" />
         </shelf>
       </collectionList>
     </stackTemplate>
   </document>
   """
+
   parser = new DOMParser();
   parser.parseFromString(template, "application/xml");

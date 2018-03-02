@@ -1,4 +1,4 @@
 json.cache! video do
-  json.date video.video_published_at.strftime("%B %e")
-  json.extract! video, :youtube_id, :progress, :watched, :data
+  json.subtitle "#{video.data["channel_title"]} - #{video.video_published_at.strftime("%B %e")}"
+  json.extract! video, :id, :youtube_id, :progress, :watched, :data
 end
