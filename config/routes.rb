@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   namespace :tv do
     resources :apps
-    resources :videos
+    resources :videos do
+      member do
+        delete :mark_watched
+      end
+    end
   end
 end

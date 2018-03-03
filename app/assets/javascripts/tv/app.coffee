@@ -3,6 +3,13 @@ this.data = {}
 this.App.onLaunch = (options) ->
   data.options = options
   template = loading()
+
+  data.player = new Player
+  data.player.addEventListener "mediaItemDidChange", mediaItemDidChange
+  data.player.addEventListener "mediaItemWillChange", mediaItemWillChange
+
+  data.nativeCode = Native.create()
+
   navigationDocument.pushDocument template
   home()
 
@@ -15,36 +22,15 @@ this.home = ->
       template = alert "Unable to load videos", error
       navigationDocument.presentModal template
 
-this.select = (event) ->
+this.selectHandler = (event) ->
   item = event.target.dataItem
   template = videoTemplate item
   navigationDocument.pushDocument template
 
-this.play = (event) ->
-  item = event.target.dataItem
-
-  nativeCode = Native.create()
-  url = nativeCode.videoLocation(item.youtube_id)
-
-  if url == ""
-    template = alert "Error", "Unable to load video"
-    navigationDocument.presentModal template
-  else
-    playVideo(url, item)
-
-playVideo = (url, item, pop = true) ->
-  player = new Player
-  video = new MediaItem('video', url)
-  video.title = item.data.title
-  player.playlist = new Playlist
-  player.playlist.push video
-  player.play()
-
-
 this.render = (videos) ->
   template = shelf()
-  template.addEventListener "select", select
-  template.addEventListener "play", play
+  template.addEventListener "select", selectHandler
+  template.addEventListener "play", playHandler
 
   navigationDocument.clear()
   navigationDocument.pushDocument template
@@ -56,6 +42,11 @@ this.render = (videos) ->
   data.dataItems = videos.map (video, index) ->
     item = new DataItem "video", video.id
     item.setPropertyPath "index", index
+    if video.watched
+      item.setPropertyPath "watchedNew", "Watched"
+    else
+      item.setPropertyPath "watchedNew", "Not Watched"
+
     for key, value of video
       item.setPropertyPath key, value
     item
