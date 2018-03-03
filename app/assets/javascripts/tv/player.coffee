@@ -33,7 +33,7 @@ this.mediaItemWillChange = (event) ->
 this.markAsWatched = (index) ->
   data.dataItems[index].watched = true
   item = data.dataItems[index]
-  request "DELETE", url("mark_watched_tv_video", item.id)
+  request "DELETE", url("tv_video_watch", item.id)
 
 this.url = (key, id = null) ->
   config.paths[key].replace("999", id)

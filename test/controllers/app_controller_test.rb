@@ -1,9 +1,9 @@
 require 'test_helper'
 
-class Tv::AppsControllerTest < ActionDispatch::IntegrationTest
+class Tv::AppControllerTest < ActionDispatch::IntegrationTest
 
   test "should get index" do
-    get tv_apps_url
+    get tv_app_url
     assert_response :found
   end
 

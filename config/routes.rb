@@ -7,8 +7,11 @@ Rails.application.routes.draw do
   end
 
   namespace :tv do
-    resources :apps
+    get :app
     resources :videos do
+      scope module: 'videos' do
+        resource :watch
+      end
       member do
         delete :mark_watched
       end

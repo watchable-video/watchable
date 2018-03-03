@@ -4,4 +4,5 @@ one:
   youtube_id: youtube_id
   cloudkit_id: cloudkit_id
   video_published_at: 2018-02-24 17:37:42
+  watched: false
   data: {data: "data"}
