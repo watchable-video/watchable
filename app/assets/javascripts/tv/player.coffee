@@ -32,4 +32,10 @@ this.mediaItemWillChange = (event) ->
     markAsWatched(id)
 
 this.markAsWatched = (id) ->
+  index = indexOfVideoID(id)
+  data.videos[index].watched = true
+
+  newView = videoPartialView(data.videos[index])
+  navigationDocument.documents[0].getElementById(id).outerHTML = newView
+
   request "POST", url("video_watch", id)
