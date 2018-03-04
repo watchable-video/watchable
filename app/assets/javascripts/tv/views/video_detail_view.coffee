@@ -1,4 +1,4 @@
-this.videoTemplate = (video) ->
+this.videoDetailView = (video) ->
 
   hd = ->
     if video.data.hd

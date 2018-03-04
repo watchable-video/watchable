@@ -1,6 +1,6 @@
 this.playHandler = (event) ->
-  item = event.target.dataItem
-  mediaItem = buildMediaItem(item)
+  video = getVideoFromLockup(event.target)
+  mediaItem = buildMediaItem(video)
 
   data.player.playlist = new Playlist
   data.player.playlist.push mediaItem
@@ -8,17 +8,18 @@ this.playHandler = (event) ->
   enqueueNextItem(mediaItem)
 
 this.enqueueNextItem = (mediaItem) ->
-  index = mediaItem.externalID * 1 + 1
-  next = data.dataItems[index]
-  nextMediaItem = buildMediaItem(next)
+  id = mediaItem.externalID * 1
+  currentIndex = indexOfVideoID(id)
+  nextVideo = data.videos[currentIndex + 1]
+  nextMediaItem = buildMediaItem(nextVideo)
   data.player.playlist.push nextMediaItem
 
-this.buildMediaItem = (item) ->
-  url = data.nativeCode.videoLocation(item.youtube_id)
-  video = new MediaItem('video', url)
-  video.title = item.data.title
-  video.externalID = item.index
-  video
+this.buildMediaItem = (video) ->
+  url = data.nativeCode.videoLocation(video.youtube_id)
+  mediaItem = new MediaItem('video', url)
+  mediaItem.title = video.data.title
+  mediaItem.externalID = video.id
+  mediaItem
 
 this.mediaItemDidChange = (event) ->
   mediaItem = event.target.currentMediaItem
@@ -27,13 +28,12 @@ this.mediaItemDidChange = (event) ->
 this.mediaItemWillChange = (event) ->
   if event.reason == "fastForwardedToEndOfMediaItem" || "playedToEndOfMediaItem"
     mediaItem = event.target.currentMediaItem
-    index = mediaItem.externalID * 1
-    markAsWatched(index)
+    id = mediaItem.externalID * 1
+    markAsWatched(id)
 
-this.markAsWatched = (index) ->
-  data.dataItems[index].watched = true
-  item = data.dataItems[index]
-  request "DELETE", url("tv_video_watch", item.id)
+this.markAsWatched = (id) ->
+  request "POST", url("tv_video_watch", id)
 
 this.url = (key, id = null) ->
   config.paths[key].replace("999", id)
+

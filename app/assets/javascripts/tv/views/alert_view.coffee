@@ -1,4 +1,4 @@
-this.alert = (title, description) ->
+this.alertView = (title, description) ->
   template = """
   <?xml version="1.0" encoding="UTF-8" ?>
     <document>
