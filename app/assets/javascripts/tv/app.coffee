@@ -14,20 +14,16 @@ this.App.onLaunch = (options) ->
   home()
 
 this.home = ->
-  request "GET", "/tv/videos.json"
+  request "GET", url("videos")
     .then (response) ->
-      render JSON.parse(response)
+      data.videos = JSON.parse(response)
+      template = shelfView(data.videos)
+      navigationDocument.clear()
+      navigationDocument.pushDocument template
     .catch (error) ->
       console.log error
       template = alertView "Unable to load videos", error
       navigationDocument.presentModal template
-
-this.render = (videos) ->
-  data.videos = videos
-  template = shelfView(data.videos)
-
-  navigationDocument.clear()
-  navigationDocument.pushDocument template
 
 this.getVideoFromLockup = (lockup) ->
   id = lockup.attributes.getNamedItem("id").value * 1
@@ -37,3 +33,20 @@ this.getVideoFromLockup = (lockup) ->
 this.indexOfVideoID = (id) ->
   data.videos.findIndex (video) ->
     video.id == id
+
+
+
+# this.App.onError
+# A callback function that is automatically called when an error is sent from the Apple TV.
+#
+# this.App.onExit
+# A callback function that is automatically called when the app has been exited.
+#
+# this.App.onLaunch
+# A callback function that is automatically called when the app has been launched.
+#
+# this.App.onResume
+# A callback function that is automatically called when the app moves to the foreground.
+#
+# this.App.onSuspend
+# A callback function that is automatically called when the app is sent to the background.

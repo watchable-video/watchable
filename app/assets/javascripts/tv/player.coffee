@@ -32,8 +32,4 @@ this.mediaItemWillChange = (event) ->
     markAsWatched(id)
 
 this.markAsWatched = (id) ->
-  request "POST", url("tv_video_watch", id)
-
-this.url = (key, id = null) ->
-  config.paths[key].replace("999", id)
-
+  request "POST", url("video_watch", id)

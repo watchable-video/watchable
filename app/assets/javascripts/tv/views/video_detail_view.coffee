@@ -24,7 +24,7 @@ this.videoDetailView = (video) ->
 
           <description><![CDATA[#{video.data.description}]]></description>
           <row>
-            <buttonLockup type="play">
+            <buttonLockup type="play" id="#{video.id}">
               <badge src="resource://button-play" />
               <title>Play</title>
             </buttonLockup>
@@ -37,5 +37,11 @@ this.videoDetailView = (video) ->
     </productTemplate>
   </document>
   """
+
   parser = new DOMParser();
-  parser.parseFromString(template, "application/xml");
+  view = parser.parseFromString(template, "application/xml");
+
+  view.addEventListener "play", playHandler
+  view.addEventListener "select", playHandler
+
+  view
