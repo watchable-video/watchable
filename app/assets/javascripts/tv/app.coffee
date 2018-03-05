@@ -2,24 +2,33 @@ this.data = {}
 
 this.App.onLaunch = (options) ->
   data.options = options
-  template = loadingView()
-
   data.player = new Player
   data.player.addEventListener "mediaItemDidChange", mediaItemDidChange
   data.player.addEventListener "mediaItemWillChange", mediaItemWillChange
-
   data.nativeCode = Native.create()
 
-  navigationDocument.pushDocument template
-  home()
+  loading = loadingView()
+  navigationDocument.pushDocument loading
 
-this.home = ->
+  menu = menuView()
+  navigationDocument.replaceDocument(menu, loading)
+
+
+
+  # home()
+
+this.search = (menuItem, menuItemDocument) ->
+  template = searchView()
+  menuItemDocument.setDocument(template, menuItem)
+
+
+this.subscriptions = (menuItem, menuItemDocument) ->
   request "GET", url("videos")
     .then (response) ->
       data.videos = JSON.parse(response)
       template = shelfView(data.videos)
-      navigationDocument.clear()
-      navigationDocument.pushDocument template
+      menuItemDocument.setDocument(template, menuItem)
+
     .catch (error) ->
       console.log error
       template = alertView "Unable to load videos", error

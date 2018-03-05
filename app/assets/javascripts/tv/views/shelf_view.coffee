@@ -11,6 +11,17 @@ this.shelfView = (videos) ->
   template = """
   <?xml version="1.0" encoding="UTF-8"?>
   <document>
+    <head>
+      <style>
+  		.overlay {
+  			padding: 0;
+  		}
+  		.resource-watched {
+  			tv-position: bottom-trailing;
+  			tv-align: trailing;
+  		}
+      </style>
+    </head>
     <stackTemplate>
       <banner>
         <title>Subscriptions</title>
