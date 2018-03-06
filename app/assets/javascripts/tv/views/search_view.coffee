@@ -1,15 +1,16 @@
 this.searchView = ->
 
   render = (query, view) ->
-    uri = url("search")
-    uri.addSearch({q: query})
-    results = request "GET", uri
-      .then (response) ->
-        data.videos = JSON.parse(response)
-        videos = data.videos.map (video, index) ->
-          videoPartialView(video)
-        view.getElementById("results").innerHTML = videos.join("")
-        view.getElementsByTagName("header").item(0).getElementsByTagName("title").item(0).textContent = "Results"
+    if query != "" && query != null
+      uri = url("search")
+      uri.addSearch({q: query})
+      results = request "GET", uri
+        .then (response) ->
+          data.videos = JSON.parse(response)
+          videos = data.videos.map (video, index) ->
+            videoPartialView(video)
+          view.getElementById("results").innerHTML = videos.join("")
+          view.getElementsByTagName("header").item(0).getElementsByTagName("title").item(0).textContent = "Results"
 
   template = """
   <?xml version="1.0" encoding="UTF-8"?>
