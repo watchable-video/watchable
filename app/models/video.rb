@@ -1,11 +1,11 @@
 class Video < ApplicationRecord
 
-  def self.new_from_yt(account, data)
+  def self.new_from_yt(account, data, fast = false)
     Video.new(
       youtube_id: data.id,
       cloudkit_id: account.cloudkit_id,
       video_published_at: data.published_at,
-      data: build_data(data)
+      data: build_data(data, fast)
     )
   end
 
@@ -19,11 +19,20 @@ class Video < ApplicationRecord
 
   private
 
-    def self.build_data(video)
-      attributes = %I[duration title channel_title]
+    def self.build_data(video, fast)
+      attributes = %I[title channel_title duration]
+      if !fast
+        attributes = attributes.concat %I[title channel_title duration]
+      end
       Hash.new.tap do |hash|
         attributes.each do |attribute|
           hash[attribute] = video.send(attribute)
+        end
+        if fast
+          hash[:thumbnail_url] = video.thumbnail_url(:high)
+        else
+          hash[:hd] = video.hd?
+          hash[:thumbnail_url] = image_url(video.thumbnail_url(:high))
         end
       end
     end

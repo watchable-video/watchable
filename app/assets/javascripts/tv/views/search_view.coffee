@@ -1,4 +1,16 @@
 this.searchView = ->
+
+  render = (query, view) ->
+    uri = url("search")
+    uri.addSearch({q: query})
+    results = request "GET", uri
+      .then (response) ->
+        data.videos = JSON.parse(response)
+        videos = data.videos.map (video, index) ->
+          videoPartialView(video)
+        view.getElementById("results").innerHTML = videos.join("")
+        view.getElementsByTagName("header").item(0).getElementsByTagName("title").item(0).textContent = "Results"
+
   template = """
   <?xml version="1.0" encoding="UTF-8"?>
   <document>
@@ -10,6 +22,10 @@ this.searchView = ->
         .title, .subtitle {
           text-align: left;
         }
+        .image {
+          width: 838;
+          height: 471;
+        }
       </style>
     </head>
     <searchTemplate>
@@ -17,7 +33,7 @@ this.searchView = ->
       <collectionList>
         <grid>
           <header>
-            <title>Results</title>
+            <title></title>
           </header>
           <section id="results">
           </section>
@@ -35,9 +51,12 @@ this.searchView = ->
   for index in [0...searchFields.length]
     field = searchFields.item(index)
     keyboard = field.getFeature("Keyboard")
-    keyboard.onTextChange = (event) ->
+    keyboard.onTextChange = debounce((event) ->
       query = keyboard.text
-      console.log("Search text changed #{query}")
-      # searchResults(document, searchText);
+      render(query, view)
+    , 800, false)
+
+  view.addEventListener "select", playVideoPlay
+  view.addEventListener "play", playVideoPlay
 
   view

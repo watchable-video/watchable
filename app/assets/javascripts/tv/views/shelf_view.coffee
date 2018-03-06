@@ -21,6 +21,10 @@ this.shelfView = (videos) ->
         .title, .subtitle {
           text-align: left;
         }
+        .image {
+          width: 960;
+          height: 540;
+        }
       </style>
     </head>
     <stackTemplate>

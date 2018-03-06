@@ -6,5 +6,5 @@ this.config.paths = {
 }
 
 this.url = (key, id = null) ->
-  config.paths[key].replace("999", id)
+  URI(config.paths[key].replace("999", id))
 

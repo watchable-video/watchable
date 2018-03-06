@@ -1,8 +1,17 @@
-this.request = (method, path) ->
+this.request = (method, uri) ->
   new Promise (resolve, reject) ->
     xhr = new XMLHttpRequest
-    url = "#{data.options.BASEURL + path}?cloudkit_id=me"
-    xhr.open method, url
+
+    base = URI(data.options.BASEURL)
+    uri.hostname(base.hostname())
+    uri.protocol(base.protocol())
+    uri.port(base.port())
+    uri.addSearch
+      cloudkit_id: "me"
+
+    href = uri.href()
+    console.log href
+    xhr.open method, href
 
     xhr.onload = ->
       if @status >= 200 and @status < 300

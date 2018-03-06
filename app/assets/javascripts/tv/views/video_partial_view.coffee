@@ -12,7 +12,7 @@ this.videoPartialView = (video) ->
 
   """
   <lockup action="VideoLockup" videoID="#{video.id}" id="lockup_#{video.id}">
-    <img src="#{video.data.thumbnail_url}" width="960" height="540" />
+    <img src="#{video.data.thumbnail_url}" class="image" />
     <title class="title"><![CDATA[#{video.data.title}]]></title>
     <subtitle class="subtitle"><![CDATA[#{video.subtitle}]]></subtitle>
     #{watched()}

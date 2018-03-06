@@ -9,7 +9,9 @@ class Tv::SearchesController < Tv::BaseController
     results.map do |result|
       index += 1
       break if index == 15
-      @videos.push Video.new_from_yt(@account, result)
+      video = Video.new_from_yt(@account, result, true)
+      video.id = index
+      @videos.push video
     end
 
     render template: 'tv/videos/index'
