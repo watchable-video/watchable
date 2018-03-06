@@ -1,27 +1,43 @@
 this.searchView = ->
-
   template = """
   <?xml version="1.0" encoding="UTF-8"?>
   <document>
+    <head>
+      <style>
+        .title {
+          font-weight: bold;
+        }
+        .title, .subtitle {
+          text-align: left;
+        }
+      </style>
+    </head>
     <searchTemplate>
       <searchField/>
-      <list>
-        <section>
-          <listItemLockup>
-            <img src="https://i.ytimg.com/vi/VYHZmmnQxyI/hqdefault.jpg" width="90" height="135" />
-            <title>Title</title>
-            <subtitle>Subtitle</subtitle>
-          </listItemLockup>
-          <listItemLockup>
-            <img src="https://i.ytimg.com/vi/VYHZmmnQxyI/hqdefault.jpg" width="90" height="135" />
-            <title>Title</title>
-            <subtitle>Subtitle</subtitle>
-          </listItemLockup>
-        </section>
-      </list>
+      <collectionList>
+        <grid>
+          <header>
+            <title>Results</title>
+          </header>
+          <section id="results">
+          </section>
+        </grid>
+      </collectionList>
     </searchTemplate>
   </document>
   """
 
+
   parser = new DOMParser();
-  parser.parseFromString(template, "application/xml");
+  view = parser.parseFromString(template, "application/xml");
+
+  searchFields = view.getElementsByTagName('searchField')
+  for index in [0...searchFields.length]
+    field = searchFields.item(index)
+    keyboard = field.getFeature("Keyboard")
+    keyboard.onTextChange = (event) ->
+      query = keyboard.text
+      console.log("Search text changed #{query}")
+      # searchResults(document, searchText);
+
+  view

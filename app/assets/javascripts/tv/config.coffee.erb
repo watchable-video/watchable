@@ -2,6 +2,7 @@ this.config = {}
 this.config.paths = {
     video_watch: "<%= Rails.application.routes.url_helpers.tv_video_watch_path(999) %>";
     videos: "<%= Rails.application.routes.url_helpers.tv_videos_path(format: :json) %>";
+    search: "<%= Rails.application.routes.url_helpers.new_tv_search_path(format: :json) %>";
 }
 
 this.url = (key, id = null) ->

@@ -10,6 +10,5 @@ this.subscriptionsPage = (menuItem, menuItemDocument) ->
       menuItemDocument.setDocument(template, menuItem)
 
     .catch (error) ->
-      console.log error
       template = alertView "Unable to load videos", error
       navigationDocument.presentModal template

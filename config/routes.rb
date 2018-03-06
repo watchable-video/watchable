@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   namespace :tv do
     get :app
+    resource :search
     resources :videos do
       scope module: 'videos' do
         resource :watch

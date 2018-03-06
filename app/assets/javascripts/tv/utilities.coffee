@@ -29,6 +29,37 @@ this.selectToggleWatched = (event) ->
   video = getVideoFromElement event.target
   toggleWatched(video.id)
 
+this.toggleWatched = (id, watched) ->
+  index = indexOfVideoID(id)
+
+  if watched
+    data.videos[index].watched = watched
+  else
+    data.videos[index].watched = !data.videos[index].watched
+
+  newView = videoPartialView(data.videos[index])
+
+  for doc in navigationDocument.documents
+
+    if doc.getElementsByTagName("menuBar").length > 0
+      menuBar = doc.getElementsByTagName("menuBar").item(0).getFeature("MenuBarDocument")
+      selected = menuBar.getSelectedItem()
+      menuDoc = menuBar.getDocument(selected)
+      if lockup = menuDoc.getElementById("lockup_#{id}")
+        lockup.outerHTML = newView
+
+    if button = doc.getElementById("watchedButton_#{id}")
+      title = button.getElementsByTagName("title").item(0)
+      if title.textContent == "Watched"
+        newText = "Unwatched"
+      else
+        newText = "Watched"
+      title.textContent = newText
+
+
+  request "POST", url("video_watch", id)
+
+
 # Utitlities
 this.eventHandler = (event) ->
   target = event.target
