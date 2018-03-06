@@ -1,10 +1,5 @@
 this.shelfView = (videos) ->
 
-  selectHandler = (event) ->
-    video = getVideoFromLockup(event.target)
-    template = videoDetailView video
-    navigationDocument.pushDocument template
-
   videos = videos.map (video, index) ->
     videoPartialView(video)
 
@@ -13,13 +8,19 @@ this.shelfView = (videos) ->
   <document>
     <head>
       <style>
-  		.overlay {
-  			padding: 0;
-  		}
-  		.resource-watched {
-  			tv-position: bottom-trailing;
-  			tv-align: trailing;
-  		}
+        .overlay {
+          padding: 0;
+        }
+        .resource-watched {
+          tv-position: bottom-trailing;
+          tv-align: trailing;
+        }
+        .title {
+          font-weight: bold;
+        }
+        .title, .subtitle {
+          text-align: left;
+        }
       </style>
     </head>
     <stackTemplate>
@@ -40,6 +41,6 @@ this.shelfView = (videos) ->
   parser = new DOMParser();
   view = parser.parseFromString(template, "application/xml");
 
-  view.addEventListener "select", selectHandler
-  view.addEventListener "play", playHandler
+  view.addEventListener "select", eventHandler
+  view.addEventListener "play", eventHandler
   view

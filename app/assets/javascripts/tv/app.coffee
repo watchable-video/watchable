@@ -12,38 +12,7 @@ this.App.onLaunch = (options) ->
 
   menu = menuView()
   navigationDocument.replaceDocument(menu, loading)
-
-
-
   # home()
-
-this.search = (menuItem, menuItemDocument) ->
-  template = searchView()
-  menuItemDocument.setDocument(template, menuItem)
-
-
-this.subscriptions = (menuItem, menuItemDocument) ->
-  request "GET", url("videos")
-    .then (response) ->
-      data.videos = JSON.parse(response)
-      template = shelfView(data.videos)
-      menuItemDocument.setDocument(template, menuItem)
-
-    .catch (error) ->
-      console.log error
-      template = alertView "Unable to load videos", error
-      navigationDocument.presentModal template
-
-this.getVideoFromLockup = (lockup) ->
-  id = lockup.attributes.getNamedItem("id").value * 1
-  index = indexOfVideoID(id)
-  data.videos[index]
-
-this.indexOfVideoID = (id) ->
-  data.videos.findIndex (video) ->
-    video.id == id
-
-
 
 # this.App.onError
 # A callback function that is automatically called when an error is sent from the Apple TV.

@@ -1,5 +1,4 @@
-this.playHandler = (event) ->
-  video = getVideoFromLockup(event.target)
+this.play = (video) ->
   mediaItem = buildMediaItem(video)
 
   data.player.playlist = new Playlist
@@ -29,13 +28,34 @@ this.mediaItemWillChange = (event) ->
   if event.reason == "fastForwardedToEndOfMediaItem" || "playedToEndOfMediaItem"
     mediaItem = event.target.currentMediaItem
     id = mediaItem.externalID * 1
-    markAsWatched(id)
+    toggleWatched(id, true)
 
-this.markAsWatched = (id) ->
+this.toggleWatched = (id, watched) ->
   index = indexOfVideoID(id)
-  data.videos[index].watched = true
+
+  if watched
+    data.videos[index].watched = watched
+  else
+    data.videos[index].watched = !data.videos[index].watched
 
   newView = videoPartialView(data.videos[index])
-  navigationDocument.documents[0].getElementById(id).outerHTML = newView
+
+  for doc in navigationDocument.documents
+
+    if doc.getElementsByTagName("menuBar").length > 0
+      menuBar = doc.getElementsByTagName("menuBar").item(0).getFeature("MenuBarDocument")
+      selected = menuBar.getSelectedItem()
+      menuDoc = menuBar.getDocument(selected)
+      if lockup = menuDoc.getElementById("lockup_#{id}")
+        lockup.outerHTML = newView
+
+    if button = doc.getElementById("watchedButton_#{id}")
+      title = button.getElementsByTagName("title").item(0)
+      if title.textContent == "Watched"
+        newText = "Unwatched"
+      else
+        newText = "Watched"
+      title.textContent = newText
+
 
   request "POST", url("video_watch", id)

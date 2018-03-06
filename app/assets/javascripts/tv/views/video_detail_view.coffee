@@ -24,9 +24,13 @@ this.videoDetailView = (video) ->
 
           <description><![CDATA[#{video.data.description}]]></description>
           <row>
-            <buttonLockup type="play" id="#{video.id}">
+            <buttonLockup action="VideoPlay" videoID="#{video.id}">
               <badge src="resource://button-play" />
               <title>Play</title>
+            </buttonLockup>
+            <buttonLockup action="ToggleWatched" videoID="#{video.id}" id="watchedButton_#{video.id}">
+              <badge src="resource://button-checkmark" />
+              <title>#{if video.watched then "Unwatched" else "Watched"}</title>
             </buttonLockup>
           </row>
         </stack>
@@ -41,7 +45,7 @@ this.videoDetailView = (video) ->
   parser = new DOMParser();
   view = parser.parseFromString(template, "application/xml");
 
-  view.addEventListener "play", playHandler
-  view.addEventListener "select", playHandler
+  view.addEventListener "play", eventHandler
+  view.addEventListener "select", eventHandler
 
   view

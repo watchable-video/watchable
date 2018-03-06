@@ -11,13 +11,10 @@ this.videoPartialView = (video) ->
       ""
 
   """
-  <lockup id="#{video.id}">
+  <lockup action="VideoLockup" videoID="#{video.id}" id="lockup_#{video.id}">
     <img src="#{video.data.thumbnail_url}" width="960" height="540" />
-    <title><![CDATA[#{video.data.title}]]></title>
-    <subtitle><![CDATA[#{video.subtitle}]]></subtitle>
-    <overlay>
-      <progressBar value="0.6" />
-    </overlay>
+    <title class="title"><![CDATA[#{video.data.title}]]></title>
+    <subtitle class="subtitle"><![CDATA[#{video.subtitle}]]></subtitle>
     #{watched()}
   </lockup>
   """

@@ -53,7 +53,13 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  config.action_controller.asset_host = Rails.application.secrets[:asset_host]
+  config.action_controller.asset_host = Proc.new { |source, request|
+    if request.ssl?
+      URI::HTTPS.build(host: request.host, port: request.port).to_s
+    else
+      URI::HTTP.build(host: request.host, port: request.port).to_s
+    end
+  }
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
