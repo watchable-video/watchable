@@ -3,6 +3,8 @@ class RefreshJob < ApplicationJob
 
   attr_reader :account
 
+  discard_on StandardError
+
   def perform(account)
     @account = account
     client.subscribed_channels.each do |channel|
