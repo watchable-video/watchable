@@ -22,7 +22,7 @@ class Video < ApplicationRecord
     def self.build_data(video, fast)
       attributes = %I[title channel_title duration]
       if !fast
-        attributes = attributes.concat %I[title channel_title duration]
+        attributes = attributes.concat %I[description view_count like_count ]
       end
       Hash.new.tap do |hash|
         attributes.each do |attribute|
