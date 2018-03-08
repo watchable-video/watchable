@@ -12,7 +12,6 @@ this.App.onLaunch = (options) ->
 
   menu = menuView()
   navigationDocument.replaceDocument(menu, loading)
-  # home()
 
 # this.App.onError
 # A callback function that is automatically called when an error is sent from the Apple TV.
