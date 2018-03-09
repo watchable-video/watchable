@@ -8,6 +8,18 @@ this.videoDetailView = (video) ->
     else
       ""
 
+  duration = ->
+    seconds = video.data.duration
+    if seconds < 60
+      "#{seconds} sec"
+    else
+      minutes = Math.round seconds / 60
+      "#{minutes} min"
+
+  formatNumber = (number) ->
+    numberFormat = new Intl.NumberFormat()
+    numberFormat.format number
+
   template = """
   <?xml version="1.0" encoding="UTF-8" ?>
   <document>
@@ -17,8 +29,12 @@ this.videoDetailView = (video) ->
         <stack>
           <title style="font-size: 45pt;"><![CDATA[#{video.data.title}]]></title>
           <row>
-            <text><![CDATA[#{video.timecode}]]></text>
+            <text style="font-weight: bold;"><![CDATA[#{video.data.channel_title}]]></text>
+          </row>
+          <row>
+            <text><![CDATA[#{duration()}]]></text>
             <text><![CDATA[#{video.full_date}]]></text>
+            <text><![CDATA[#{formatNumber(video.data.view_count)} views]]></text>
             #{hd()}
           </row>
 

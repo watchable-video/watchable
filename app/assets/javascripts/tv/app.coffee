@@ -5,6 +5,7 @@ this.App.onLaunch = (options) ->
   data.player = new Player
   data.player.addEventListener "mediaItemDidChange", mediaItemDidChange
   data.player.addEventListener "mediaItemWillChange", mediaItemWillChange
+  data.player.addEventListener "timeDidChange", timeDidChange, {interval: 1}
   data.nativeCode = Native.create()
 
   loading = loadingView()
