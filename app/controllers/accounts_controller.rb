@@ -1,3 +1,7 @@
+require 'googleauth'
+require 'googleauth/web_user_authorizer'
+require 'googleauth/stores/redis_token_store'
+
 class AccountsController < ApplicationController
 
   def new
@@ -6,12 +10,22 @@ class AccountsController < ApplicationController
 
   def create
     session[:cloudkit_id] = params[:account][:cloudkit_id]
-    redirect_to Yt::Account.new(scopes: %w[youtube.readonly], redirect_uri: redirect_uri).authentication_url
+
+    scope = ["https://www.googleapis.com/auth/youtube.readonly"]
+    token_store = Google::Auth::Stores::RedisTokenStore.new()
+    authorizer = Google::Auth::WebUserAuthorizer.new(GOOGLE_CLIENT_ID, scope, token_store, redirect_uri)
+
+    user_id = params[:account][:cloudkit_id]
+    credentials = authorizer.get_credentials(session[:cloudkit_id], request)
+    if credentials
+      logger.info { "has credentials" }
+    else
+      redirect_to authorizer.get_authorization_url(login_hint: session[:cloudkit_id], request: request)
+    end
   end
 
   def save
-    account = Yt::Account.new authorization_code: params[:code], redirect_uri: redirect_uri
-    Account.create_from_yt!(session[:cloudkit_id], account)
+    Google::Auth::WebUserAuthorizer.handle_auth_callback_deferred(request)
     head :ok
   end
 
@@ -22,3 +36,4 @@ class AccountsController < ApplicationController
     end
 
 end
+

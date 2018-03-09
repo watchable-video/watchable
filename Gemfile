@@ -21,6 +21,7 @@ gem "activerecord-import"
 gem "foreman"
 gem "clockwork"
 gem "dalli"
+gem "googleauth"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

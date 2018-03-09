@@ -10,18 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_25_013742) do
+ActiveRecord::Schema.define(version: 2018_03_09_015741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "cloudkit_id", null: false
-    t.string "google_access_token", null: false
-    t.string "google_refresh_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cloudkit_id"], name: "index_accounts_on_cloudkit_id", unique: true
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.bigint "account_id"
+    t.integer "name", null: false
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_settings_on_account_id"
   end
 
   create_table "videos", force: :cascade do |t|
@@ -36,4 +43,5 @@ ActiveRecord::Schema.define(version: 2018_02_25_013742) do
     t.index ["cloudkit_id", "youtube_id"], name: "index_videos_on_cloudkit_id_and_youtube_id", unique: true
   end
 
+  add_foreign_key "settings", "accounts"
 end
