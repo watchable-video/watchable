@@ -10,30 +10,24 @@ class AccountsController < ApplicationController
 
   def create
     session[:cloudkit_id] = params[:account][:cloudkit_id]
-
-    scope = ["https://www.googleapis.com/auth/youtube.readonly"]
-    token_store = Google::Auth::Stores::RedisTokenStore.new()
-    authorizer = Google::Auth::WebUserAuthorizer.new(GOOGLE_CLIENT_ID, scope, token_store, redirect_uri)
-
-    user_id = params[:account][:cloudkit_id]
     credentials = authorizer.get_credentials(session[:cloudkit_id], request)
-    if credentials
-      logger.info { "has credentials" }
-    else
+    if !credentials
       redirect_to authorizer.get_authorization_url(login_hint: session[:cloudkit_id], request: request)
     end
   end
 
   def save
-    Google::Auth::WebUserAuthorizer.handle_auth_callback_deferred(request)
+    authorizer.handle_auth_callback(session[:cloudkit_id], request)
+    Account.create(cloudkit_id: session[:cloudkit_id])
     head :ok
   end
 
   private
 
-    def redirect_uri
-      Rails.application.routes.url_helpers.save_accounts_url
+    def authorizer
+      redirect_uri = Rails.application.routes.url_helpers.save_accounts_url
+      scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
+      token_store = Google::Auth::Stores::RedisTokenStore.new()
+      Google::Auth::WebUserAuthorizer.new(GOOGLE_CLIENT_ID, scopes, token_store, redirect_uri)
     end
-
 end
-

@@ -1,25 +1,27 @@
+require 'google/apis'
+require 'google/apis/youtube_v3'
+require 'googleauth'
+require 'googleauth/stores/redis_token_store'
+
 class Tv::SearchesController < Tv::BaseController
 
   def new
-    collection = Yt::Collections::Videos.new(auth: client.auth)
-    results = collection.where(order: 'relevance', max_results: 15, q: params[:q])
-
-    index = 0
-    @videos = []
-    results.map do |result|
-      index += 1
-      break if index == 15
-      video = Video.new_from_yt(@account, result, true)
-      video.id = index
-      @videos.push video
-    end
-
-    render template: 'tv/videos/index'
+    response = client.list_searches('snippet', max_results: 25, q: params[:q], type: "video,channel,playlist")
+    render json: response.to_json
   end
 
   private
 
     def client
-      @client ||= Yt::Account.new access_token: @account.google_access_token, refresh_token: @account.google_refresh_token
+      @client ||= begin
+        scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
+        token_store = Google::Auth::Stores::RedisTokenStore.new()
+        authorizer = Google::Auth::UserAuthorizer.new(GOOGLE_CLIENT_ID, scopes, token_store)
+        authorize = authorizer.get_credentials(@account.cloudkit_id)
+        service = Google::Apis::YoutubeV3::YouTubeService.new
+        service.authorization = authorize
+        service
+      end
+
     end
 end
