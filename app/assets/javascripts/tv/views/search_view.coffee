@@ -10,7 +10,7 @@ this.searchView = ->
           videos = data.videos.map (video, index) ->
             videoPartialView(video)
           view.getElementById("results").innerHTML = videos.join("")
-          view.getElementsByTagName("header").item(0).getElementsByTagName("title").item(0).textContent = "Results"
+          view.getElementById("title").textContent = "Results"
 
   template = """
   <?xml version="1.0" encoding="UTF-8"?>
@@ -34,7 +34,7 @@ this.searchView = ->
       <collectionList>
         <grid>
           <header>
-            <title></title>
+            <title id="title"></title>
           </header>
           <section id="results">
           </section>

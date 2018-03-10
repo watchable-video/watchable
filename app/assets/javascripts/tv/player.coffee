@@ -4,11 +4,12 @@ this.play = (video) ->
       data.player.playlist = new Playlist
       data.player.playlist.push mediaItem
       data.player.play()
-      enqueueNextItem(mediaItem)
+      enqueueNextItem()
 
-this.enqueueNextItem = (mediaItem) ->
-  id = mediaItem.externalID * 1
-  currentIndex = indexOfVideoID(id)
+this.enqueueNextItem = () ->
+  index = data.player.playlist.length - 1
+  lastItem = data.player.playlist.item(index)
+  currentIndex = indexOfVideoID(lastItem.externalID)
   nextVideo = data.videos[currentIndex + 1]
   buildMediaItem(nextVideo)
     .then (nextMediaItem) ->
@@ -26,20 +27,29 @@ this.buildMediaItem = (video) ->
     else
       resolve(newMediaItem(location, video))
 
+this.newMediaItem = (url, video) ->
+  mediaItem = new MediaItem("video", url)
+  mediaItem.externalID = video.id
+  mediaItem.title = video.data.title
+  mediaItem.subtitle = video.data.channel_title
+  mediaItem.description = video.data.description
+  mediaItem.artworkImageURL = video.data.thumbnail_url
+  mediaItem
+
 this.mediaItemDidChange = (event) ->
-  mediaItem = event.target.currentMediaItem
-  enqueueNextItem(mediaItem)
+  enqueueNextItem()
 
 this.mediaItemWillChange = (event) ->
-  if event.reason == "fastForwardedToEndOfMediaItem" || "playedToEndOfMediaItem"
-    mediaItem = event.target.currentMediaItem
-    id = mediaItem.externalID * 1
-    index = indexOfVideoID(id)
-    video = data.videos[index]
-    toggleWatched(video.id, true)
+  shouldMarkWatched = (event.reason == "fastForwardedToEndOfMediaItem" || event.reason == "playedToEndOfMediaItem")
+  if shouldMarkWatched
+    video = getVideoByID(event.target.previousMediaItem.externalID)
+    toggleWatched(video, true)
 
-this.newMediaItem = (url, video) ->
-  mediaItem = new MediaItem('video', url)
-  mediaItem.title = video.data.title
-  mediaItem.externalID = video.id
-  mediaItem
+this.timeDidChange = (event) ->
+  video = getVideoByID(event.target.currentMediaItem.externalID)
+  videoLength = video.data.duration
+  currentTime = event.time
+  percentLeft = (videoLength - currentTime) / videoLength
+  shouldMarkWatched = (percentLeft < 0.15 && video.watched == false)
+  if shouldMarkWatched
+    toggleWatched(video, true)
