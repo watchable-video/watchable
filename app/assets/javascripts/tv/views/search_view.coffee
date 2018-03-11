@@ -55,7 +55,7 @@ this.searchView = ->
     keyboard.onTextChange = debounce((event) ->
       query = keyboard.text
       render(query, view)
-    , 800, false)
+    , 400, false)
 
   view.addEventListener "select", playVideoPlay
   view.addEventListener "play", playVideoPlay
