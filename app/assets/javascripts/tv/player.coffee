@@ -40,7 +40,7 @@ this.mediaItemDidChange = (event) ->
   enqueueNextItem()
 
 this.mediaItemWillChange = (event) ->
-  shouldMarkWatched = (event.reason == "fastForwardedToEndOfMediaItem" || event.reason == "playedToEndOfMediaItem")
+  shouldMarkWatched = (event.reason == 1 || event.reason == 2)
   if shouldMarkWatched
     video = getVideoByID(event.target.previousMediaItem.externalID)
     toggleWatched(video, true)
