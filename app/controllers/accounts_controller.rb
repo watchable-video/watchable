@@ -1,6 +1,5 @@
 require 'googleauth'
 require 'googleauth/web_user_authorizer'
-require 'googleauth/stores/redis_token_store'
 
 class AccountsController < ApplicationController
 
@@ -18,7 +17,6 @@ class AccountsController < ApplicationController
 
   def save
     authorizer.handle_auth_callback(session[:cloudkit_id], request)
-    Account.create(cloudkit_id: session[:cloudkit_id])
     head :ok
   end
 
@@ -27,7 +25,7 @@ class AccountsController < ApplicationController
     def authorizer
       redirect_uri = Rails.application.routes.url_helpers.save_accounts_url
       scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
-      token_store = Google::Auth::Stores::RedisTokenStore.new()
+      token_store = CredentialStore.new()
       Google::Auth::WebUserAuthorizer.new(GOOGLE_CLIENT_ID, scopes, token_store, redirect_uri)
     end
 end

@@ -1,7 +1,6 @@
 require 'google/apis'
 require 'google/apis/youtube_v3'
 require 'googleauth'
-require 'googleauth/stores/redis_token_store'
 
 class GoogleClient
 
@@ -29,7 +28,7 @@ class GoogleClient
   def client
     @client ||= begin
       scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
-      token_store = Google::Auth::Stores::RedisTokenStore.new()
+      token_store = CredentialStore.new()
       authorizer = Google::Auth::UserAuthorizer.new(GOOGLE_CLIENT_ID, scopes, token_store)
       authorize = authorizer.get_credentials(id)
       service = Google::Apis::YoutubeV3::YouTubeService.new
