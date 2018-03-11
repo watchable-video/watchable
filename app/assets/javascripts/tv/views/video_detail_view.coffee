@@ -1,7 +1,7 @@
 this.videoDetailView = (video) ->
 
   hd = ->
-    if video.data.hd
+    if video.hd
       hd = """
       <badge src="resource://hd" />
       """
@@ -9,7 +9,7 @@ this.videoDetailView = (video) ->
       ""
 
   duration = ->
-    seconds = video.data.duration
+    seconds = video.duration_in_seconds
     if seconds < 60
       "#{seconds} sec"
     else
@@ -27,18 +27,18 @@ this.videoDetailView = (video) ->
       <banner>
 
         <stack>
-          <title style="font-size: 45pt;"><![CDATA[#{video.data.title}]]></title>
+          <title style="font-size: 45pt;"><![CDATA[#{video.data.snippet.title}]]></title>
           <row>
-            <text style="font-weight: bold;"><![CDATA[#{video.data.channel_title}]]></text>
+            <text style="font-weight: bold;"><![CDATA[#{video.data.snippet.channel_title}]]></text>
           </row>
           <row>
             <text><![CDATA[#{duration()}]]></text>
             <text><![CDATA[#{video.full_date}]]></text>
-            <text><![CDATA[#{formatNumber(video.data.view_count)} views]]></text>
+            <text><![CDATA[#{formatNumber(video.data.statistics.view_count)} views]]></text>
             #{hd()}
           </row>
 
-          <description><![CDATA[#{video.data.description}]]></description>
+          <description><![CDATA[#{video.data.snippet.description}]]></description>
           <row>
             <buttonLockup action="VideoPlay" videoID="#{video.id}">
               <badge src="resource://button-play" />
@@ -51,7 +51,7 @@ this.videoDetailView = (video) ->
           </row>
         </stack>
 
-        <heroImg src="#{video.data.thumbnail_url}" style="width: 800pt;" />
+        <heroImg src="#{video.poster_frame}" style="width: 800pt;" />
       </banner>
 
     </productTemplate>

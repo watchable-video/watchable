@@ -6,19 +6,14 @@ class RefreshJob < ApplicationJob
   discard_on StandardError
 
   def perform(account)
-    @account = account
-    client.subscribed_channels.each do |channel|
-      videos = channel.videos.where(max_results: 3).includes(:content_details).map do |data|
-        Video.new_from_yt(account, data)
+    google = GoogleClient.new(account.cloudkit_id)
+    playlist_ids = google.subscribed_playlist_ids
+    playlist_ids.each do |playlist_id|
+      videos = google.channel_videos(playlist_id).map do |data|
+        Video.new_from_api(account, data)
       end
       Video.import videos, on_duplicate_key_update: {conflict_target: [:cloudkit_id, :youtube_id], columns: [:data]}
     end
   end
-
-  private
-
-    def client
-      Yt::Account.new access_token: account.google_access_token, refresh_token: account.google_refresh_token
-    end
 
 end

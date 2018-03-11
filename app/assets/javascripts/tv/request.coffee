@@ -7,10 +7,9 @@ this.request = (method, uri) ->
     uri.protocol(base.protocol())
     uri.port(base.port())
     uri.addSearch
-      cloudkit_id: "me"
+      cloudkit_id: "me2"
 
     href = uri.href()
-    console.log href
     xhr.open method, href
 
     xhr.onload = ->

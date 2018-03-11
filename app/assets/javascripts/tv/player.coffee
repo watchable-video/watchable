@@ -30,10 +30,10 @@ this.buildMediaItem = (video) ->
 this.newMediaItem = (url, video) ->
   mediaItem = new MediaItem("video", url)
   mediaItem.externalID = video.id
-  mediaItem.title = video.data.title
-  mediaItem.subtitle = video.data.channel_title
-  mediaItem.description = video.data.description
-  mediaItem.artworkImageURL = video.data.thumbnail_url
+  mediaItem.title = video.data.snippet.title
+  mediaItem.subtitle = video.data.snippet.channel_title
+  mediaItem.description = video.data.snippet.description
+  mediaItem.artworkImageURL = video.poster_frame
   mediaItem
 
 this.mediaItemDidChange = (event) ->
