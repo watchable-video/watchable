@@ -47,9 +47,9 @@ this.mediaItemWillChange = (event) ->
 
 this.timeDidChange = (event) ->
   video = getVideoByID(event.target.currentMediaItem.externalID)
-  videoLength = video.data.duration
+  videoLength = video.duration_in_seconds
   currentTime = event.time
   percentLeft = (videoLength - currentTime) / videoLength
-  shouldMarkWatched = (percentLeft < 0.15 && video.watched == false)
+  shouldMarkWatched = (percentLeft < 0.2 && video.watched == false)
   if shouldMarkWatched
     toggleWatched(video, true)
