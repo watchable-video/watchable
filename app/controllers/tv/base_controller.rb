@@ -25,7 +25,8 @@ class Tv::BaseController < ApplicationController
   end
 
   def authorize
-    @account = Account.where(cloudkit_id: params[:cloudkit_id]).take!
+    # @account = Account.where(cloudkit_id: params[:cloudkit_id]).take!
+    head :ok
   end
 
   # def bearer_token

@@ -17,7 +17,6 @@ class AccountsController < ApplicationController
 
   def save
     authorizer.handle_auth_callback(session[:cloudkit_id], request)
-    head :ok
   end
 
   private

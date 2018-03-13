@@ -102,3 +102,7 @@ this.debounce = (func, threshold, execAsap) ->
     else if (execAsap)
       func.apply(obj, args)
     timeout = setTimeout delayed, threshold || 100
+
+this.sleep = (time) ->
+  new Promise (resolve, reject) ->
+    setTimeout(resolve, time)

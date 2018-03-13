@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2018_03_09_014528) do
     t.string "cloudkit_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "google_auth_data"
+    t.string "google_auth_data", null: false
     t.index ["cloudkit_id"], name: "index_accounts_on_cloudkit_id", unique: true
   end
 
