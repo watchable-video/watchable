@@ -46,7 +46,7 @@ this.loadInterface = (initialDocument, wait) ->
   if wait
     loading = loadingView()
     navigationDocument.replaceDocument(loading, initialDocument)
-    sleep(5000)
+    sleep(10000)
       .then (result) ->
         showMenu(loading)
   else
