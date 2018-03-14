@@ -22,7 +22,7 @@ namespace :app do
   task :quiet do
     on roles(:app) do |host|
       within release_path do
-        execute :sudo, :systemctl, :kill, "--signal TSTP", "'app-worker@*.service'"
+        execute :sudo, :systemctl, :kill, "--signal TSTP", "'#{fetch(:application)}-worker@*.service'"
       end
     end
   end
@@ -31,7 +31,7 @@ namespace :app do
   task :start do
     on roles(:app) do |host|
       within release_path do
-        execute :sudo, :systemctl, :start, "app.target"
+        execute :sudo, :systemctl, :start, "#{fetch(:application)}.target"
       end
     end
   end
@@ -40,7 +40,7 @@ namespace :app do
   task :stop do
     on roles(:app) do |host|
       within release_path do
-        execute :sudo, :systemctl, :stop, "app.target"
+        execute :sudo, :systemctl, :stop, "#{fetch(:application)}.target"
       end
     end
   end
@@ -49,7 +49,7 @@ namespace :app do
   task :restart do
     on roles(:app) do |host|
       within release_path do
-        execute :sudo, :systemctl, :restart, "app.target"
+        execute :sudo, :systemctl, :restart, "#{fetch(:application)}.target"
       end
     end
   end
@@ -58,9 +58,9 @@ namespace :app do
   task :export do
     on roles(:app) do
       within current_path do
-        execute :sudo, "/usr/local/rbenv/shims/foreman", :export, :systemd, "/etc/systemd/system", "--user app", "--root /srv/apps/tube/current"
+        execute :sudo, "/usr/local/rbenv/shims/foreman", :export, "--app #{fetch(:application)}", :systemd, "/etc/systemd/system", "--user app", "--root #{fetch(:deploy_to)}/current"
         execute :sudo, :systemctl, "daemon-reload"
-        execute :sudo, :systemctl, :enable, "app.target"
+        execute :sudo, :systemctl, :enable, "#{fetch(:application)}.target"
       end
     end
   end

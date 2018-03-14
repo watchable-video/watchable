@@ -3,15 +3,26 @@ require "open3"
 class Tv::MediaLocationsController < Tv::BaseController
 
   def new
-    @location = system_call(params["youtube_id"])
+    @location = youtube_dl_api_request(params["youtube_id"])
   end
 
   private
 
-    def system_call(url)
-      cmd = ["youtube-dl", "-g", "-f", "22/18", url]
-      Rails.logger.debug("Running: #{cmd.join(" ")}")
-      Open3.capture2e(*cmd).first.strip
+    def youtube_dl_api_request(youtube_id)
+      params = { video: youtube_id }
+
+      uri = URI Rails.application.secrets.ytdl_url
+      uri.path = "/info"
+      uri.query = URI.encode_www_form params
+
+      response = Net::HTTP.start(uri.host, uri.port) do |http|
+        request = Net::HTTP::Get.new uri
+        http.request request
+      end
+
+      data = JSON.load(response.body)
+
+      data["url"]
     end
 
 end
