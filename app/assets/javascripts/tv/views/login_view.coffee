@@ -1,7 +1,6 @@
 this.loginView = ->
   template = """
-  <?xml version="1.0" encoding="UTF-8" ?>
-    <document>
+  <document>
     <alertTemplate>
       <title>Login</title>
       <description style="margin-bottom: 20;">Visit #{data.options.BASEURL}/accounts/new and enter this code to login:</description>

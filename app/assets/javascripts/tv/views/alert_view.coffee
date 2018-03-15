@@ -1,7 +1,6 @@
 this.alertView = (title, description) ->
   template = """
-  <?xml version="1.0" encoding="UTF-8" ?>
-    <document>
+  <document>
     <alertTemplate>
       <title>#{title}</title>
       <description>#{description}</description>

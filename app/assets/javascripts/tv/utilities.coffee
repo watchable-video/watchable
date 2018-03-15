@@ -7,7 +7,7 @@ this.selectLoadPage = (event) ->
 this.selectVideoLockup = (event) ->
   video = getVideoFromElement event.target
   template = videoDetailView video
-  navigationDocument.pushDocument template
+  setActiveDocument template, "push"
 
 this.playVideoLockup = (event) ->
   video = getVideoFromElement event.target
@@ -61,6 +61,17 @@ this.toggleWatched = (video, watched) ->
 
     request "POST", url("video_watch", id)
 
+this.updateUI = (domID, newElement) ->
+  for document in navigationDocument.documents
+    if document.getElementsByTagName("menuBar").length > 0
+      menuBar = document.getElementsByTagName("menuBar").item(0).getFeature("MenuBarDocument")
+      selected = menuBar.getSelectedItem()
+      menuDocument = menuBar.getDocument(selected)
+      if element = menuDocument.getElementById(domID)
+        element.outerHTML = newElement
+
+    if element = document.getElementById(domID)
+      element.outerHTML = newElement
 
 # Utitlities
 this.eventHandler = (event) ->

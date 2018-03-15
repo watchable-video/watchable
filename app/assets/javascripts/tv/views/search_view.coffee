@@ -13,7 +13,6 @@ this.searchView = ->
           view.getElementById("title").textContent = "Results"
 
   template = """
-  <?xml version="1.0" encoding="UTF-8"?>
   <document>
     <head>
       <style>

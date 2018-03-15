@@ -8,50 +8,44 @@ this.App.onLaunch = (options) ->
   data.player.addEventListener "timeDidChange", timeDidChange, {interval: 1}
   data.nativeCode = Native.create()
 
-  loading = loadingView()
-  navigationDocument.pushDocument loading
+  setActiveDocument loadingView(), "push"
 
   if data.options.CLOUDKITID
-    login(loading)
+    login()
   else
-    alert = alertView("Error", "Please sign-in to iCloud in Settings and try again.")
-    navigationDocument.replaceDocument(alert, loading)
+    setActiveDocument alertView("Error", "Please sign-in to iCloud in Settings and try again.")
 
-this.login = (initialDocument) ->
+this.setActiveDocument = (document, method = "replace") ->
+  if method == "push"
+    navigationDocument.pushDocument document
+  else
+    navigationDocument.replaceDocument(document, data.activeDocument)
+  data.activeDocument = document
+
+this.login = () ->
   request "GET", url("authenticate")
     .then (response) ->
-      loadInterface(initialDocument, false)
+      setActiveDocument menuView()
     .catch (error) ->
-      retryLogin(error, initialDocument)
+      retryLogin(error)
 
-this.retryLogin = (error, initialDocument) ->
+this.retryLogin = (error) ->
+  delayedLoadMenu = ->
+    setActiveDocument loadingView()
+    sleep(10000)
+      .then (result) ->
+        setActiveDocument menuView()
+
   if error.status == 404
-    login = loginView()
-    navigationDocument.replaceDocument(login, initialDocument)
+    setActiveDocument loginView()
     intervalId = setInterval ( ->
       request "GET", url("authenticate")
         .then (response) ->
           clearInterval intervalId
-          loadInterface(initialDocument, true)
+          delayedLoadMenu()
     ), 2000
   else
-    alert = alertView("Serivce Unavailable", "Please try again later.")
-    navigationDocument.replaceDocument(alert, initialDocument)
-
-this.loadInterface = (initialDocument, wait) ->
-  showMenu = (initial) ->
-    menu = menuView()
-    navigationDocument.replaceDocument(menu, initial)
-
-  if wait
-    loading = loadingView()
-    navigationDocument.replaceDocument(loading, initialDocument)
-    sleep(10000)
-      .then (result) ->
-        showMenu(loading)
-  else
-    showMenu(initialDocument)
-
+    setActiveDocument alertView("Service Unavailable", "Please try again later.")
 
 # this.App.onError
 # A callback function that is automatically called when an error is sent from the Apple TV.
