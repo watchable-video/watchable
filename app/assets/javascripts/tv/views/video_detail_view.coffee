@@ -21,8 +21,8 @@ this.videoDetailView = (video) ->
     numberFormat.format number
 
   template = """
-  
-  <document>
+
+  <document id="videoDetailView_#{video.id}">
     <productTemplate theme="dark">
       <banner>
 
@@ -44,9 +44,8 @@ this.videoDetailView = (video) ->
               <badge src="resource://button-play" />
               <title>Play</title>
             </buttonLockup>
-            <buttonLockup action="ToggleWatched" videoID="#{video.id}" id="watchedButton_#{video.id}">
-              <badge src="resource://button-checkmark" />
-              <title>#{if video.watched then "Unwatched" else "Watched"}</title>
+            <buttonLockup action="ToggleWatched" videoID="#{video.id}" id="watchedButtonView_#{video.id}">
+            #{watchedButtonView(video)}
             </buttonLockup>
           </row>
         </stack>
@@ -65,3 +64,9 @@ this.videoDetailView = (video) ->
   view.addEventListener "select", eventHandler
 
   view
+
+this.watchedButtonView = (video) ->
+  """
+  <badge src="resource://button-checkmark" />
+  <title>#{if video.watched then "Unwatched" else "Watched"}</title>
+  """

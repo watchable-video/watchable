@@ -38,6 +38,10 @@ class Video < ApplicationRecord
     data.dig("content_details", "definition") == "hd"
   end
 
+  def read_only
+    new_record?
+  end
+
   private
 
     def cache_key

@@ -31,35 +31,18 @@ this.selectToggleWatched = (event) ->
 
 this.toggleWatched = (video, watched) ->
   unless data.activePage == "searchPage"
-    id = video.id
-    index = indexOfVideoID(id)
+    index = indexOfVideoID(video.id)
 
     if watched
       data.videos[index].watched = watched
     else
       data.videos[index].watched = !data.videos[index].watched
 
-    newView = videoPartialView(data.videos[index])
+    updateUI "videoPartialView_#{video.id}", videoPartialInnerView(data.videos[index])
+    updateUI "watchedButtonView_#{video.id}", watchedButtonView(data.videos[index])
 
-    for doc in navigationDocument.documents
-
-      if doc.getElementsByTagName("menuBar").length > 0
-        menuBar = doc.getElementsByTagName("menuBar").item(0).getFeature("MenuBarDocument")
-        selected = menuBar.getSelectedItem()
-        menuDoc = menuBar.getDocument(selected)
-        if lockup = menuDoc.getElementById("lockup_#{id}")
-          lockup.outerHTML = newView
-
-      if button = doc.getElementById("watchedButton_#{id}")
-        title = button.getElementsByTagName("title").item(0)
-        if title.textContent == "Watched"
-          newText = "Unwatched"
-        else
-          newText = "Watched"
-        title.textContent = newText
-
-
-    request "POST", url("video_watch", id)
+    unless video.read_only
+      request "POST", url("video_watch", video.id)
 
 this.updateUI = (domID, newElement) ->
   for document in navigationDocument.documents
@@ -68,10 +51,10 @@ this.updateUI = (domID, newElement) ->
       selected = menuBar.getSelectedItem()
       menuDocument = menuBar.getDocument(selected)
       if element = menuDocument.getElementById(domID)
-        element.outerHTML = newElement
+        element.innerHTML = newElement
 
     if element = document.getElementById(domID)
-      element.outerHTML = newElement
+      element.innerHTML = newElement
 
 # Utitlities
 this.eventHandler = (event) ->
@@ -79,7 +62,6 @@ this.eventHandler = (event) ->
   if action = elementAttribute(target, "action")
     handler = "#{event.type}#{action}"
     this[handler](event)
-
 
 this.getVideoByID = (id) ->
   index = indexOfVideoID(id)

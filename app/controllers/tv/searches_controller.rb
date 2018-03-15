@@ -7,7 +7,7 @@ class Tv::SearchesController < Tv::BaseController
 
     @videos = items.map do |data|
       Video.new_from_api(@account, data).tap do |video|
-        video.id = (10_000..11_000).to_a.sample
+        video.id = (100_000_000_000..100_000_001_000).to_a.sample
       end
     end
 
