@@ -30,26 +30,29 @@ this.login = () ->
       retryLogin(error)
 
 this.retryLogin = (error) ->
-  delayedLoadMenu = ->
-    setActiveDocument loadingView("Loading your subscriptions…")
-    sleep(15000)
-      .then (result) ->
-        setActiveDocument menuView()
-
   if error.status == 404
     request "POST", url("activation_token")
       .then (response) ->
         data = JSON.parse(response)
         setActiveDocument loginView(data.token)
 
-    intervalId = setInterval ( ->
-      request "GET", url("authenticate")
-        .then (response) ->
-          clearInterval intervalId
-          delayedLoadMenu()
-    ), 2000
+    poll "authenticate"
+      .then (response) ->
+        setActiveDocument loadingView("Loading your subscriptions…")
+        poll "sync_status"
+      .then (response) ->
+        setActiveDocument menuView()
   else
     setActiveDocument alertView("Service Unavailable", "Please try again later.")
+
+this.poll = (endpoint) ->
+  new Promise (resolve, reject) ->
+    intervalId = setInterval ( ->
+      request "GET", url(endpoint)
+        .then (response) ->
+          clearInterval intervalId
+          resolve(response)
+    ), 2000
 
 # this.App.onError
 # A callback function that is automatically called when an error is sent from the Apple TV.

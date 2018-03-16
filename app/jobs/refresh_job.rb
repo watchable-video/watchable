@@ -1,8 +1,6 @@
 class RefreshJob < ApplicationJob
   queue_as :default
 
-  attr_reader :account
-
   discard_on StandardError
 
   def perform(account)
@@ -14,6 +12,7 @@ class RefreshJob < ApplicationJob
       end
       Video.import videos, on_duplicate_key_update: {conflict_target: [:cloudkit_id, :youtube_id], columns: [:data]}
     end
+    account.update(initial_sync_complete: true)
   end
 
 end
