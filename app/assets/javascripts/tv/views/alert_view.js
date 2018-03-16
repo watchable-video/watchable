@@ -1,11 +1,11 @@
-this.alertView = (title, description) ->
-  template = """
-  <document>
-    <alertTemplate>
-      <title>#{title}</title>
-      <description>#{description}</description>
-    </alertTemplate>
-  </document>
-  """
-  parser = new DOMParser();
-  parser.parseFromString(template, "application/xml");
+this.alertView = function(title, description) {
+  const template = `
+    <document>
+      <alertTemplate>
+        <title>${title}</title>
+        <description>${description}</description>
+      </alertTemplate>
+    </document>`;
+  const parser = new DOMParser();
+  return parser.parseFromString(template, "application/xml");
+};

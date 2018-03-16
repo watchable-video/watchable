@@ -1,13 +1,14 @@
-this.loadingView = (text = "Loading…") ->
+this.loadingView = function(text) {
 
-  template = """
-  <document>
-    <loadingTemplate>
-      <activityIndicator>
-        <title><![CDATA[#{text}]]></title>
-      </activityIndicator>
-    </loadingTemplate>
-  </document>
-  """
-  parser = new DOMParser();
-  parser.parseFromString(template, "application/xml");
+  if (text == null) { text = "Loading…"; }
+  const template = `
+    <document>
+      <loadingTemplate>
+        <activityIndicator>
+          <title><![CDATA[${text}]]></title>
+        </activityIndicator>
+      </loadingTemplate>
+    </document>`;
+  const parser = new DOMParser();
+  return parser.parseFromString(template, "application/xml");
+};

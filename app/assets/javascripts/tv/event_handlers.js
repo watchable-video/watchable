@@ -1,35 +1,44 @@
-this.eventHandler = (event) ->
-  target = event.target
-  if action = elementAttribute(target, "action")
-    handler = "#{event.type}#{action}"
-    this[handler](event)
+this.eventHandler = function(event) {
+  let action;
+  if (action = elementAttribute(event.target, "action")) {
+    const handler = `${event.type}${action}`;
+    return this[handler](event);
+  }
+};
 
-this.selectLoadPage = (event) ->
-  menuItemDocument = event.target.parentNode.getFeature("MenuBarDocument")
-  page = elementAttribute(event.target, "page")
-  this[page](event.target, menuItemDocument)
+this.selectLoadPage = function(event) {
+  const menuItemDocument = event.target.parentNode.getFeature("MenuBarDocument");
+  const page = elementAttribute(event.target, "page");
+  this[page](event.target, menuItemDocument);
+};
 
-this.selectVideoLockup = (event) ->
-  video = getVideoFromElement event.target
-  template = videoDetailView video
-  setActiveDocument template, "push"
+this.selectVideoLockup = function(event) {
+  const video = getVideoFromElement(event.target);
+  const template = videoDetailView(video);
+  return setActiveDocument(template, "push");
+};
 
-this.playVideoLockup = (event) ->
-  video = getVideoFromElement event.target
-  play(video)
+this.playVideoLockup = function(event) {
+  const video = getVideoFromElement(event.target);
+  return play(video);
+};
 
-this.playVideoPlay = (event) ->
-  video = getVideoFromElement event.target
-  play(video)
+this.playVideoPlay = function(event) {
+  const video = getVideoFromElement(event.target);
+  return play(video);
+};
 
-this.selectVideoPlay = (event) ->
-  video = getVideoFromElement event.target
-  play(video)
+this.selectVideoPlay = function(event) {
+  const video = getVideoFromElement(event.target);
+  return play(video);
+};
 
-this.playToggleWatched = (event) ->
-  video = getVideoFromElement event.target
-  toggleWatched(video)
+this.playToggleWatched = function(event) {
+  const video = getVideoFromElement(event.target);
+  return toggleWatched(video);
+};
 
-this.selectToggleWatched = (event) ->
-  video = getVideoFromElement event.target
-  toggleWatched(video)
+this.selectToggleWatched = function(event) {
+  const video = getVideoFromElement(event.target);
+  return toggleWatched(video);
+};

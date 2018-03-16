@@ -1,62 +1,66 @@
-this.searchView = ->
+this.searchView = function() {
 
-  render = (query, view) ->
-    if query != "" && query != null
-      uri = url("search")
-      uri.addSearch({q: query})
-      results = request "GET", uri
-        .then (response) ->
-          data.videos = JSON.parse(response)
-          videos = data.videos.map (video, index) ->
-            videoPartialView(video)
-          view.getElementById("results").innerHTML = videos.join("")
-          view.getElementById("title").textContent = "Results"
+  const render = function(query, view) {
+    if ((query !== "") && (query !== null)) {
+      let results;
+      const uri = url("search");
+      uri.addSearch({q: query});
+      return results = request("GET", uri)
+        .then(function(response) {
+          data.videos = JSON.parse(response);
+          const videos = data.videos.map((video, index) => videoPartialView(video));
+          view.getElementById("results").innerHTML = videos.join("");
+          return view.getElementById("title").textContent = "Results";
+      });
+    }
+  };
 
-  template = """
-  <document>
-    <head>
-      <style>
-        .title {
-          font-weight: bold;
-        }
-        .title, .subtitle {
-          text-align: left;
-        }
-        .image {
-          width: 838;
-          height: 471;
-        }
-      </style>
-    </head>
-    <searchTemplate>
-      <searchField/>
-      <collectionList>
-        <grid>
-          <header>
-            <title id="title"></title>
-          </header>
-          <section id="results">
-          </section>
-        </grid>
-      </collectionList>
-    </searchTemplate>
-  </document>
-  """
+  const template = `
+    <document>
+      <head>
+        <style>
+          .title {
+            font-weight: bold;
+          }
+          .title, .subtitle {
+            text-align: left;
+          }
+          .image {
+            width: 838;
+            height: 471;
+          }
+        </style>
+      </head>
+      <searchTemplate>
+        <searchField/>
+        <collectionList>
+          <grid>
+            <header>
+              <title id="title"></title>
+            </header>
+            <section id="results">
+            </section>
+          </grid>
+        </collectionList>
+      </searchTemplate>
+    </document>`;
 
 
-  parser = new DOMParser();
-  view = parser.parseFromString(template, "application/xml");
+  const parser = new DOMParser();
+  const view = parser.parseFromString(template, "application/xml");
 
-  searchFields = view.getElementsByTagName('searchField')
-  for index in [0...searchFields.length]
-    field = searchFields.item(index)
-    keyboard = field.getFeature("Keyboard")
-    keyboard.onTextChange = debounce((event) ->
-      query = keyboard.text
-      render(query, view)
-    , 400, false)
+  const searchFields = view.getElementsByTagName('searchField');
 
-  view.addEventListener "select", playVideoPlay
-  view.addEventListener "play", playVideoPlay
+  searchFields.forEach(function(field) {
+    var keyboard = field.getFeature("Keyboard");
+    keyboard.onTextChange = debounce(function(event) {
+      const query = keyboard.text;
+      render(query, view);
+    }, 400, false);
+  });
 
-  view
+  view.addEventListener("select", playVideoPlay);
+  view.addEventListener("play", playVideoPlay);
+
+  return view;
+};

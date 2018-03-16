@@ -1,28 +1,34 @@
-this.request = (method, uri) ->
-  new Promise (resolve, reject) ->
-    xhr = new XMLHttpRequest
+this.request = (method, uri) => new Promise(function(resolve, reject) {
+  const xhr = new XMLHttpRequest;
 
-    base = URI(data.options.BASEURL)
-    uri.hostname(base.hostname())
-    uri.protocol(base.protocol())
-    uri.port(base.port())
-    uri.addSearch
-      cloudkit_id: data.options.CLOUDKITID
+  const base = URI(data.options.BASEURL);
+  uri.hostname(base.hostname());
+  uri.protocol(base.protocol());
+  uri.port(base.port());
+  uri.addSearch({
+    cloudkit_id: data.options.CLOUDKITID
+  });
 
-    href = uri.href()
-    xhr.open method, href
+  const href = uri.href();
 
-    xhr.onload = ->
-      if @status >= 200 and @status < 300
-        resolve xhr.response
-      else
-        reject
-          status: @status
-          statusText: xhr.statusText
-
-    xhr.onerror = ->
-      reject
-        status: @status
+  xhr.open(method, href);
+  xhr.onload = function() {
+    if ((this.status >= 200) && (this.status < 300)) {
+      resolve(xhr.response);
+    } else {
+      reject({
+        status: this.status,
         statusText: xhr.statusText
+      });
+    }
+  };
 
-    xhr.send()
+  xhr.onerror = function() {
+    reject({
+      status: this.status,
+      statusText: xhr.statusText
+    });
+  };
+
+  xhr.send();
+});
