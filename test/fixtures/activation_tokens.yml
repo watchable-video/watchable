@@ -1,11 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  account: one
-  name: 1
-  data: 
-
-two:
-  account: two
-  name: 1
-  data: 
+  cloudkit_id: MyString
+  token: MyString

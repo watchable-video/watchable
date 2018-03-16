@@ -2,5 +2,4 @@
 
 one:
   cloudkit_id: "cloudkit_id"
-  google_access_token: "google_access_token"
-  google_refresh_token: "google_refresh_token"
+  google_auth_data: "google_auth_data"

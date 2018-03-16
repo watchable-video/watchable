@@ -4,8 +4,14 @@ class Account < ApplicationRecord
 
   after_create_commit :refresh
 
+  store_accessor :settings, :initial_sync_complete
+
   def refresh
     RefreshJob.perform_later self
+  end
+
+  def initial_sync_complete
+    !!super
   end
 
 end

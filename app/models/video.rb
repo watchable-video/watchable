@@ -30,8 +30,9 @@ class Video < ApplicationRecord
   end
 
   def poster_frame
-    thumbnails = data.dig("snippet", "thumbnails",)
-    thumbnails.dig("maxres", "url") ||  thumbnails.dig("standard", "url") ||  thumbnails.dig("high", "url")
+    if thumbnails = data.dig("snippet", "thumbnails",)
+      thumbnails.dig("maxres", "url") ||  thumbnails.dig("standard", "url") ||  thumbnails.dig("high", "url")
+    end
   end
 
   def hd

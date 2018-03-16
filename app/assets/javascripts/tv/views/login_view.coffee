@@ -1,10 +1,9 @@
-this.loginView = ->
+this.loginView = (activationToken) ->
   template = """
   <document>
     <alertTemplate>
-      <title>Login</title>
-      <description style="margin-bottom: 20;">Visit #{data.options.BASEURL}/accounts/new and enter this code to login:</description>
-      <text style="font-weight: bold; font-size: 50;">#{data.options.CLOUDKITID}</text>
+      <title>Activate your account by visiting:</title>
+      <text style="font-weight: bold; font-size: 50;">#{data.options.BASEURL}/activate/#{activationToken}</text>
     </alertTemplate>
   </document>
   """

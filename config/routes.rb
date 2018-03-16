@@ -1,7 +1,9 @@
-require 'sidekiq/web'
+require "sidekiq/web"
 
 Rails.application.routes.draw do
-  mount Sidekiq::Web => '/sidekiq'
+  mount Sidekiq::Web => "/sidekiq"
+
+  get "/activate/:token", to: "accounts#create", as: :activate
 
   resources :accounts do
     collection do
@@ -14,8 +16,9 @@ Rails.application.routes.draw do
     resource :search
     resource :authenticate
     resource :media_location
+    resources :activation_tokens
     resources :videos do
-      scope module: 'videos' do
+      scope module: "videos" do
         resource :watch
       end
       member do

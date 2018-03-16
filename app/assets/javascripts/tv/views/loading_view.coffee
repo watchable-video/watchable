@@ -1,9 +1,10 @@
-this.loadingView = ->
+this.loadingView = (text = "Loading…") ->
+
   template = """
   <document>
     <loadingTemplate>
       <activityIndicator>
-        <title><![CDATA[Loading…]]></title>
+        <title><![CDATA[#{text}]]></title>
       </activityIndicator>
     </loadingTemplate>
   </document>

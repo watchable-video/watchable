@@ -31,13 +31,17 @@ this.login = () ->
 
 this.retryLogin = (error) ->
   delayedLoadMenu = ->
-    setActiveDocument loadingView()
-    sleep(10000)
+    setActiveDocument loadingView("Loading your subscriptions…")
+    sleep(15000)
       .then (result) ->
         setActiveDocument menuView()
 
   if error.status == 404
-    setActiveDocument loginView()
+    request "POST", url("activation_token")
+      .then (response) ->
+        data = JSON.parse(response)
+        setActiveDocument loginView(data.token)
+
     intervalId = setInterval ( ->
       request "GET", url("authenticate")
         .then (response) ->

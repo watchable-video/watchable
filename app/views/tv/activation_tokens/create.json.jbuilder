@@ -1,0 +1,1 @@
+json.extract! @activation_token, :token

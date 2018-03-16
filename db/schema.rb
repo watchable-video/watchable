@@ -10,17 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_09_014528) do
+ActiveRecord::Schema.define(version: 2018_03_15_235943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "cloudkit_id", null: false
+    t.string "google_auth_data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "google_auth_data", null: false
+    t.jsonb "settings", default: {}
     t.index ["cloudkit_id"], name: "index_accounts_on_cloudkit_id", unique: true
+  end
+
+  create_table "activation_tokens", force: :cascade do |t|
+    t.string "cloudkit_id", null: false
+    t.string "token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cloudkit_id", "token"], name: "index_activation_tokens_on_cloudkit_id_and_token", unique: true
   end
 
   create_table "videos", force: :cascade do |t|
