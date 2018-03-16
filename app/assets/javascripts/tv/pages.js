@@ -7,12 +7,8 @@ searchPage = function(menuItem, menuItemDocument) {
 subscriptionsPage = function(menuItem, menuItemDocument) {
   data.activePage = "subscriptionsPage";
   request("GET", url("videos")).then(function(response) {
-    data.videos = JSON.parse(response);
-    console.log(data.videos);
-    console.log(menuItem);
-    console.log(menuItemDocument);
+    data.videos = JSON.parse(response).map(data => new Video(data))
     const template = shelfView(data.videos);
-    console.log(template);
     menuItemDocument.setDocument(template, menuItem);
   }).catch(function(error) {
     console.log(error);

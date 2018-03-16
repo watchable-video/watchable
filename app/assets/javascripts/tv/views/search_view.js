@@ -5,12 +5,12 @@ searchView = function() {
       let results;
       const uri = url("search");
       uri.addSearch({q: query});
-      return results = request("GET", uri)
-        .then(function(response) {
-          data.videos = JSON.parse(response);
-          const videos = data.videos.map((video, index) => videoPartialView(video));
-          view.getElementById("results").innerHTML = videos.join("");
-          return view.getElementById("title").textContent = "Results";
+      request("GET", uri).then(function(response) {
+        data.videos = JSON.parse(response).map(data => new Video(data));
+        const videos = data.videos.map((video, index) => videoPartialView(video));
+
+        updateElement("searchResults", videos.join(""))
+        updateElement("searchTitle", "Results")
       });
     }
   };
@@ -36,9 +36,9 @@ searchView = function() {
         <collectionList>
           <grid>
             <header>
-              <title id="title"></title>
+              <title id="searchTitle"></title>
             </header>
-            <section id="results">
+            <section id="searchResults">
             </section>
           </grid>
         </collectionList>

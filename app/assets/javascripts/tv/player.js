@@ -1,45 +1,21 @@
-play = video => buildMediaItem(video)
-  .then(function(mediaItem) {
+play = function(video) {
+  video.toMediaItem().then(function(mediaItem) {
     data.player.playlist = new Playlist;
     data.player.playlist.push(mediaItem);
     data.player.play();
     enqueueNextItem();
-  }
-);
+  })
+}
 
 enqueueNextItem = function() {
   const index = data.player.playlist.length - 1;
   const lastItem = data.player.playlist.item(index);
   const currentIndex = indexOfVideoID(lastItem.externalID);
   const nextVideo = data.videos[currentIndex + 1];
-  buildMediaItem(nextVideo)
-    .then(nextMediaItem => data.player.playlist.push(nextMediaItem));
+  nextVideo.toMediaItem().then(item => data.player.playlist.push(item));
 };
 
-buildMediaItem = video => new Promise(function(resolve, reject) {
-  const location = data.nativeCode.videoLocation(video.youtube_id);
-  if (location === "") {
-    const uri = url("media_location").addSearch({youtube_id: video.youtube_id});
-    request("GET", uri).then(function(response) {
-      const data = JSON.parse(response);
-      resolve(newMediaItem(data["location"], video));
-    });
-  } else {
-    return resolve(newMediaItem(location, video));
-  }
-});
-
-newMediaItem = function(url, video) {
-  const mediaItem = new MediaItem("video", url);
-  mediaItem.externalID = video.id;
-  mediaItem.title = video.data.snippet.title;
-  mediaItem.subtitle = video.data.snippet.channel_title;
-  mediaItem.description = video.data.snippet.description;
-  mediaItem.artworkImageURL = video.poster_frame;
-  return mediaItem;
-};
-
-mediaItemDidChange = event => enqueueNextItem();
+mediaItemDidChange = (event => enqueueNextItem());
 
 mediaItemWillChange = function(event) {
   const shouldMarkWatched = ((event.reason === 1) || (event.reason === 2));

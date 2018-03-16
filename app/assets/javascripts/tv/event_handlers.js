@@ -20,25 +20,25 @@ selectVideoLockup = function(event) {
 
 playVideoLockup = function(event) {
   const video = getVideoFromElement(event.target);
-  return play(video);
+  play(video);
 };
 
 playVideoPlay = function(event) {
   const video = getVideoFromElement(event.target);
-  return play(video);
+  play(video);
 };
 
 selectVideoPlay = function(event) {
   const video = getVideoFromElement(event.target);
-  return play(video);
+  play(video);
 };
 
 playToggleWatched = function(event) {
   const video = getVideoFromElement(event.target);
-  return toggleWatched(video);
+  toggleWatched(video);
 };
 
 selectToggleWatched = function(event) {
   const video = getVideoFromElement(event.target);
-  return toggleWatched(video);
+  toggleWatched(video);
 };
