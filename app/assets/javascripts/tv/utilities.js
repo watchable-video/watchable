@@ -1,19 +1,9 @@
 toggleWatched = function(video, watched) {
   if (data.activePage !== "searchPage") {
     const index = indexOfVideoID(video.id);
-
-    if (watched) {
-      data.videos[index].watched = watched;
-    } else {
-      data.videos[index].watched = !data.videos[index].watched;
-    }
-
+    data.videos[index].toggleWatched(watched)
     updateElement(`videoPartialView_${video.id}`, videoPartialInnerView(data.videos[index]));
     updateElement(`watchedButtonView_${video.id}`, watchedButtonView(data.videos[index]));
-
-    if (!video.read_only) {
-      request("POST", url("video_watch", video.id));
-    }
   }
 };
 

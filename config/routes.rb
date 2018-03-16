@@ -25,9 +25,6 @@ Rails.application.routes.draw do
       scope module: "videos" do
         resource :watch
       end
-      member do
-        delete :mark_watched
-      end
     end
   end
 end

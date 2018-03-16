@@ -1,5 +1,3 @@
-require "open3"
-
 class Tv::MediaLocationsController < Tv::BaseController
 
   def new

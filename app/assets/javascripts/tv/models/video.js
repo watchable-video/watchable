@@ -1,8 +1,23 @@
 class Video {
+
   constructor(data) {
     for (var property in data) {
       this[property] = data[property];
     }
+  }
+
+  duration() {
+    const seconds = this.duration_in_seconds;
+    if (seconds < 60) {
+      return `${seconds} sec`;
+    } else {
+      const minutes = Math.round(seconds / 60);
+      return `${minutes} min`;
+    }
+  }
+
+  viewCount() {
+    return this._formatNumber(this.data.statistics.view_count)
   }
 
   toMediaItem() {
@@ -15,9 +30,29 @@ class Video {
           resolve(this._mediaItem(data["location"]));
         });
       } else {
-        return resolve(this._mediaItem(location));
+        resolve(this._mediaItem(location));
       }
     });
+  }
+
+  toggleWatched(watchedStatus) {
+    if (watchedStatus) {
+      this.watched = watchedStatus;
+    } else {
+      this.watched = !this.watched;
+    }
+    if (!this.read_only) {
+      if (this.watched) {
+        request("DELETE", url("video_watch", this.id));
+      } else {
+        request("POST", url("video_watch", this.id));
+      }
+    }
+  }
+
+  _formatNumber(number) {
+    const numberFormat = new Intl.NumberFormat();
+    return numberFormat.format(number);
   }
 
   _mediaItem(url) {

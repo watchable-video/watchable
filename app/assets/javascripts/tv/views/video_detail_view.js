@@ -8,21 +8,6 @@ videoDetailView = function(video) {
     }
   };
 
-  const duration = function() {
-    const seconds = video.duration_in_seconds;
-    if (seconds < 60) {
-      return `${seconds} sec`;
-    } else {
-      const minutes = Math.round(seconds / 60);
-      return `${minutes} min`;
-    }
-  };
-
-  const formatNumber = function(number) {
-    const numberFormat = new Intl.NumberFormat();
-    return numberFormat.format(number);
-  };
-
   const template = `
     <document id="videoDetailView_${video.id}">
       <productTemplate theme="dark">
@@ -34,9 +19,9 @@ videoDetailView = function(video) {
               <text style="font-weight: bold;"><![CDATA[${video.data.snippet.channel_title}]]></text>
             </row>
             <row>
-              <text><![CDATA[${duration()}]]></text>
+              <text><![CDATA[${video.duration()}]]></text>
               <text><![CDATA[${video.full_date}]]></text>
-              <text><![CDATA[${formatNumber(video.data.statistics.view_count)} views]]></text>
+              <text><![CDATA[${video.viewCount()} views]]></text>
               ${hd()}
             </row>
 

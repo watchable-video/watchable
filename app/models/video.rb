@@ -17,6 +17,10 @@ class Video < ApplicationRecord
     self.update(watched: true)
   end
 
+  def mark_unwatched!
+    self.update(watched: false)
+  end
+
   def duration_in_seconds
     if duration = data.dig("content_details", "duration")
       match = duration.match %r{^P(?:|(?<weeks>\d*?)W)(?:|(?<days>\d*?)D)(?:|T(?:|(?<hours>\d*?)H)(?:|(?<min>\d*?)M)(?:|(?<sec>\d*?)S))$}
