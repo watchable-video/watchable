@@ -1,34 +1,3 @@
-# Event handlers
-this.selectLoadPage = (event) ->
-  menuItemDocument = event.target.parentNode.getFeature("MenuBarDocument")
-  page = elementAttribute(event.target, "page")
-  this[page](event.target, menuItemDocument)
-
-this.selectVideoLockup = (event) ->
-  video = getVideoFromElement event.target
-  template = videoDetailView video
-  setActiveDocument template, "push"
-
-this.playVideoLockup = (event) ->
-  video = getVideoFromElement event.target
-  play(video)
-
-this.playVideoPlay = (event) ->
-  video = getVideoFromElement event.target
-  play(video)
-
-this.selectVideoPlay = (event) ->
-  video = getVideoFromElement event.target
-  play(video)
-
-this.playToggleWatched = (event) ->
-  video = getVideoFromElement event.target
-  toggleWatched(video)
-
-this.selectToggleWatched = (event) ->
-  video = getVideoFromElement event.target
-  toggleWatched(video)
-
 this.toggleWatched = (video, watched) ->
   unless data.activePage == "searchPage"
     index = indexOfVideoID(video.id)
@@ -38,30 +7,30 @@ this.toggleWatched = (video, watched) ->
     else
       data.videos[index].watched = !data.videos[index].watched
 
-    updateUI "videoPartialView_#{video.id}", videoPartialInnerView(data.videos[index])
-    updateUI "watchedButtonView_#{video.id}", watchedButtonView(data.videos[index])
+    updateElement "videoPartialView_#{video.id}", videoPartialInnerView(data.videos[index])
+    updateElement "watchedButtonView_#{video.id}", watchedButtonView(data.videos[index])
 
     unless video.read_only
       request "POST", url("video_watch", video.id)
 
-this.updateUI = (domID, newElement) ->
+this.updateElement = (id, newElement) ->
   for document in navigationDocument.documents
     if document.getElementsByTagName("menuBar").length > 0
       menuBar = document.getElementsByTagName("menuBar").item(0).getFeature("MenuBarDocument")
       selected = menuBar.getSelectedItem()
       menuDocument = menuBar.getDocument(selected)
-      if element = menuDocument.getElementById(domID)
-        element.innerHTML = newElement
+      if oldElement = menuDocument.getElementById(id)
+        oldElement.innerHTML = newElement
 
-    if element = document.getElementById(domID)
-      element.innerHTML = newElement
+    if oldElement = document.getElementById(id)
+      oldElement.innerHTML = newElement
 
-# Utitlities
-this.eventHandler = (event) ->
-  target = event.target
-  if action = elementAttribute(target, "action")
-    handler = "#{event.type}#{action}"
-    this[handler](event)
+this.setActiveDocument = (document, method = "replace") ->
+  if method == "push"
+    navigationDocument.pushDocument document
+  else
+    navigationDocument.replaceDocument(document, data.activeDocument)
+  data.activeDocument = document
 
 this.getVideoByID = (id) ->
   index = indexOfVideoID(id)
@@ -95,6 +64,15 @@ this.debounce = (func, threshold, execAsap) ->
     else if (execAsap)
       func.apply(obj, args)
     timeout = setTimeout delayed, threshold || 100
+
+this.poll = (endpoint) ->
+  new Promise (resolve, reject) ->
+    intervalId = setInterval ( ->
+      request "GET", url(endpoint)
+        .then (response) ->
+          clearInterval intervalId
+          resolve(response)
+    ), 2000
 
 this.sleep = (time) ->
   new Promise (resolve, reject) ->
