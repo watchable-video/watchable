@@ -1,10 +1,10 @@
-this.searchPage = function(menuItem, menuItemDocument) {
+searchPage = function(menuItem, menuItemDocument) {
   data.activePage = "searchPage";
   const template = searchView();
   menuItemDocument.setDocument(template, menuItem);
 };
 
-this.subscriptionsPage = function(menuItem, menuItemDocument) {
+subscriptionsPage = function(menuItem, menuItemDocument) {
   data.activePage = "subscriptionsPage";
   request("GET", url("videos")).then(function(response) {
     data.videos = JSON.parse(response);
@@ -21,7 +21,7 @@ this.subscriptionsPage = function(menuItem, menuItemDocument) {
   });
 };
 
-this.activationPage = function(error) {
+activationPage = function(error) {
   if (error.status === 404) {
     request("POST", url("activation_token")).then(function(response) {
       const data = JSON.parse(response);
@@ -39,7 +39,7 @@ this.activationPage = function(error) {
   }
 };
 
-this.login = function() {
+login = function() {
   request("GET", url("authenticate"))
     .then(response => setActiveDocument(menuView()))
     .catch(error => activationPage(error));

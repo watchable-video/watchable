@@ -1,4 +1,4 @@
-this.loginView = function(activationToken) {
+loginView = function(activationToken) {
   const template = `
     <document>
       <alertTemplate>

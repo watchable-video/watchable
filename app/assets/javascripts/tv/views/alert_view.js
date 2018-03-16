@@ -1,4 +1,4 @@
-this.alertView = function(title, description) {
+alertView = function(title, description) {
   const template = `
     <document>
       <alertTemplate>

@@ -1,4 +1,4 @@
-this.play = video => buildMediaItem(video)
+play = video => buildMediaItem(video)
   .then(function(mediaItem) {
     data.player.playlist = new Playlist;
     data.player.playlist.push(mediaItem);
@@ -7,7 +7,7 @@ this.play = video => buildMediaItem(video)
   }
 );
 
-this.enqueueNextItem = function() {
+enqueueNextItem = function() {
   const index = data.player.playlist.length - 1;
   const lastItem = data.player.playlist.item(index);
   const currentIndex = indexOfVideoID(lastItem.externalID);
@@ -16,7 +16,7 @@ this.enqueueNextItem = function() {
     .then(nextMediaItem => data.player.playlist.push(nextMediaItem));
 };
 
-this.buildMediaItem = video => new Promise(function(resolve, reject) {
+buildMediaItem = video => new Promise(function(resolve, reject) {
   const location = data.nativeCode.videoLocation(video.youtube_id);
   if (location === "") {
     const uri = url("media_location").addSearch({youtube_id: video.youtube_id});
@@ -29,7 +29,7 @@ this.buildMediaItem = video => new Promise(function(resolve, reject) {
   }
 });
 
-this.newMediaItem = function(url, video) {
+newMediaItem = function(url, video) {
   const mediaItem = new MediaItem("video", url);
   mediaItem.externalID = video.id;
   mediaItem.title = video.data.snippet.title;
@@ -39,9 +39,9 @@ this.newMediaItem = function(url, video) {
   return mediaItem;
 };
 
-this.mediaItemDidChange = event => enqueueNextItem();
+mediaItemDidChange = event => enqueueNextItem();
 
-this.mediaItemWillChange = function(event) {
+mediaItemWillChange = function(event) {
   const shouldMarkWatched = ((event.reason === 1) || (event.reason === 2));
   if (shouldMarkWatched) {
     const video = getVideoByID(event.target.previousMediaItem.externalID);
@@ -49,7 +49,7 @@ this.mediaItemWillChange = function(event) {
   }
 };
 
-this.timeDidChange = function(event) {
+timeDidChange = function(event) {
   const video = getVideoByID(event.target.currentMediaItem.externalID);
   const videoLength = video.duration_in_seconds;
   const currentTime = event.time;

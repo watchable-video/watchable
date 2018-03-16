@@ -1,4 +1,4 @@
-this.shelfView = function(videos) {
+shelfView = function(videos) {
 
   videos = videos.map((video, index) => videoPartialView(video));
 

@@ -1,4 +1,4 @@
-this.loadingView = function(text) {
+loadingView = function(text) {
 
   if (text == null) { text = "Loading…"; }
   const template = `

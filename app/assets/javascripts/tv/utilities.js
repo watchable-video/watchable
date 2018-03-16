@@ -1,4 +1,4 @@
-this.toggleWatched = function(video, watched) {
+toggleWatched = function(video, watched) {
   if (data.activePage !== "searchPage") {
     const index = indexOfVideoID(video.id);
 
@@ -17,7 +17,7 @@ this.toggleWatched = function(video, watched) {
   }
 };
 
-this.updateElement = function(id, newElement) {
+updateElement = function(id, newElement) {
   navigationDocument.documents.forEach(function(document) {
     var oldElement;
     if (document.getElementsByTagName("menuBar").length > 0) {
@@ -35,7 +35,7 @@ this.updateElement = function(id, newElement) {
   });
 }
 
-this.setActiveDocument = function(document, method) {
+setActiveDocument = function(document, method) {
   if (method == null) { method = "replace"; }
   if (method === "push") {
     navigationDocument.pushDocument(document);
@@ -45,23 +45,23 @@ this.setActiveDocument = function(document, method) {
   data.activeDocument = document;
 };
 
-this.getVideoByID = function(id) {
+getVideoByID = function(id) {
   const index = indexOfVideoID(id);
   return data.videos[index];
 };
 
-this.getVideoFromElement = function(element) {
+getVideoFromElement = function(element) {
   const id = elementAttribute(element, "videoID") * 1;
   const index = indexOfVideoID(id);
   return data.videos[index];
 };
 
-this.indexOfVideoID = function(id) {
+indexOfVideoID = function(id) {
   id = id * 1;
   return data.videos.findIndex(video => video.id === id);
 };
 
-this.elementAttribute = function(element, attribute) {
+elementAttribute = function(element, attribute) {
   let attr;
   if ((attr = element.attributes.getNamedItem(attribute))) {
     return attr.value;
@@ -70,7 +70,7 @@ this.elementAttribute = function(element, attribute) {
   }
 };
 
-this.debounce = function(func, threshold, execAsap) {
+debounce = function(func, threshold, execAsap) {
   let timeout = null;
   return function(...args) {
     const obj = this;
@@ -87,7 +87,7 @@ this.debounce = function(func, threshold, execAsap) {
   };
 };
 
-this.poll = endpoint => new Promise(function(resolve, reject) {
+poll = endpoint => new Promise(function(resolve, reject) {
   let intervalId;
   return intervalId = setInterval(( () =>
   request("GET", url(endpoint)).then(function(response) {
@@ -96,6 +96,6 @@ this.poll = endpoint => new Promise(function(resolve, reject) {
   ), 2000);
 });
 
-this.sleep = time => new Promise(function(resolve, reject) {
+sleep = time => new Promise(function(resolve, reject) {
   return setTimeout(resolve, time);
 });

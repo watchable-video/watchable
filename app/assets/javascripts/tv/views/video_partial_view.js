@@ -1,10 +1,12 @@
-this.videoPartialView = function(video) {
-  return `<lockup action="VideoLockup" videoID="${video.id}" id="videoPartialView_${video.id}">
-    ${videoPartialInnerView(video)}
-   </lockup>`
-};
+videoPartialView = (video =>
+  `
+  <lockup action="VideoLockup" videoID="${video.id}" id="videoPartialView_${video.id}">
+      ${videoPartialInnerView(video)}
+  </lockup>
+  `
+);
 
-this.videoPartialInnerView = function(video) {
+videoPartialInnerView = function(video) {
   const watched = function() {
     if (video.watched) {
       var template = `<overlay class="overlay">

@@ -1,6 +1,6 @@
-this.data = {};
+data = {};
 
-this.App.onLaunch = function(options) {
+App.onLaunch = function(options) {
   data.options = options;
   data.player = new Player;
   data.player.addEventListener("mediaItemDidChange", mediaItemDidChange);

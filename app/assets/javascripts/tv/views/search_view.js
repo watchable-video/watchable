@@ -1,4 +1,4 @@
-this.searchView = function() {
+searchView = function() {
 
   const render = function(query, view) {
     if ((query !== "") && (query !== null)) {
@@ -51,13 +51,14 @@ this.searchView = function() {
 
   const searchFields = view.getElementsByTagName('searchField');
 
-  searchFields.forEach(function(field) {
+  for (var i = searchFields.length - 1; i >= 0; i--) {
+    var field = searchFields.item(i);
     var keyboard = field.getFeature("Keyboard");
     keyboard.onTextChange = debounce(function(event) {
       const query = keyboard.text;
       render(query, view);
     }, 400, false);
-  });
+  }
 
   view.addEventListener("select", playVideoPlay);
   view.addEventListener("play", playVideoPlay);

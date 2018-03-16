@@ -1,4 +1,4 @@
-this.menuView = function(videos) {
+menuView = function(videos) {
 
   const template = `
     <document>

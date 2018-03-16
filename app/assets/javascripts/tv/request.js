@@ -1,4 +1,4 @@
-this.request = (method, uri) => new Promise(function(resolve, reject) {
+request = (method, uri) => new Promise(function(resolve, reject) {
   const xhr = new XMLHttpRequest;
 
   const base = URI(data.options.BASEURL);

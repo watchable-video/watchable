@@ -1,4 +1,4 @@
-this.videoDetailView = function(video) {
+videoDetailView = function(video) {
 
   var hd = function() {
     if (video.hd) {
@@ -67,9 +67,9 @@ this.videoDetailView = function(video) {
   return view;
 };
 
-this.watchedButtonView = video =>
-  `\
-<badge src="resource://button-checkmark" />
-<title>${video.watched ? "Unwatched" : "Watched"}</title>\
-`
-;
+watchedButtonView = (video =>
+  `
+  <badge src="resource://button-checkmark" />
+  <title>${video.watched ? "Unwatched" : "Watched"}</title>
+  `
+);
