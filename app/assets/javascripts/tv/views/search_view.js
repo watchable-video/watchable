@@ -9,20 +9,11 @@ class SearchView extends View {
       keyboard.onTextChange = debounce((event) => {
         const query = keyboard.text;
         if (query) {
-          this.displayResult(query);
+          new SearchResultsView(query, "Results").update();
         }
       }, 400, false);
     }
     return view;
-  }
-
-  displayResult (query) {
-    const uri = url("search");
-    uri.addSearch({q: query});
-    request("GET", uri).then((response) => {
-      data.videos = JSON.parse(response).map(data => new Video(data));
-      updateElement("searchResults", this._searchResults("Results", data.videos));
-    });
   }
 
   template() {
@@ -45,22 +36,10 @@ class SearchView extends View {
       <searchTemplate>
         <searchField/>
         <collectionList>
-          <grid id="searchResults">
-          ${this._searchResults()}
-          </grid>
+          ${new SearchResultsView().template()}
         </collectionList>
       </searchTemplate>
     </document>`;
   }
 
-  _searchResults(title = "", videos) {
-    const markup = videos ? videos.map((video, index) => new VideoLockupView(video).template()).join("") : "";
-    return `
-    <header>
-      <title><![CDATA[${title}]]></title>
-    </header>
-    <section>
-      ${markup}
-    </section>`;
-  }
 }

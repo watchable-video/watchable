@@ -12,7 +12,7 @@ class View {
         const menuBar = document.getElementsByTagName("menuBar").item(0).getFeature("MenuBarDocument");
         const selected = menuBar.getSelectedItem();
         const menuDocument = menuBar.getDocument(selected);
-        let oldElement = document.getElementById(this._id());
+        let oldElement = menuDocument.getElementById(this._id());
         if (oldElement) {
           oldElement.innerHTML = this._innerHTML();
         }

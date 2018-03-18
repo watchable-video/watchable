@@ -23,6 +23,16 @@ playVideoLockup = function(event) {
   play(video);
 };
 
+selectSearchResult = function(event) {
+  const video = getVideoFromElement(event.target);
+  play(video);
+};
+
+playSearchResult = function(event) {
+  const video = getVideoFromElement(event.target);
+  play(video);
+};
+
 playVideoPlay = function(event) {
   const video = getVideoFromElement(event.target);
   play(video);

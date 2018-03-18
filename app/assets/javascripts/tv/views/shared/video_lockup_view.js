@@ -1,13 +1,14 @@
 class VideoLockupView extends View {
 
-  constructor(video) {
+  constructor(video, action) {
     super();
     this.video = video
+    this.action = action || "VideoLockup"
   }
 
   template() {
     return `
-    <lockup action="VideoLockup" videoID="${this.video.id}" id="${this._id()}">
+    <lockup action="${this.action}" videoID="${this.video.id}" id="${this._id()}">
       ${this._innerHTML()}
     </lockup>`;
   }
