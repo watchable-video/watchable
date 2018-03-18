@@ -7,7 +7,7 @@ class WatchedButtonView extends View {
 
   template() {
     return `
-    <buttonLockup action="ToggleWatched" videoID="${this.video.id}" id="${this._id()}">
+    <buttonLockup action="toggleWatched" videoID="${this.video.id}" id="${this._id()}">
       ${this._innerHTML()}
     </buttonLockup>`;
   }

@@ -3,7 +3,7 @@ class VideoLockupView extends View {
   constructor(video, action) {
     super();
     this.video = video
-    this.action = action || "VideoLockup"
+    this.action = action || "videoLockup"
   }
 
   template() {

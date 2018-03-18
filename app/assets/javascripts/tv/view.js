@@ -1,8 +1,8 @@
 class View {
   render() {
     const template = new DOMParser().parseFromString(this.template(), "application/xml");
-    template.addEventListener("select", eventHandler);
-    template.addEventListener("play", eventHandler);
+    template.addEventListener("select", EventHandler.newFromEvent);
+    template.addEventListener("play", EventHandler.newFromEvent);
     return template;
   }
 

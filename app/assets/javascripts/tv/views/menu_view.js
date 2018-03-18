@@ -5,10 +5,10 @@ class MenuView extends View {
     <document>
       <menuBarTemplate>
         <menuBar>
-          <menuItem action="LoadPage" page="subscriptionsPage">
+          <menuItem action="loadPage" page="subscriptionsPage">
             <title>Subscriptions</title>
           </menuItem>
-          <menuItem action="LoadPage" page="searchPage">
+          <menuItem action="loadPage" page="searchPage">
             <title>Search</title>
           </menuItem>
         </menuBar>

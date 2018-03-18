@@ -1,7 +1,7 @@
 toggleWatched = function(video, watched) {
   const index = indexOfVideoID(video.id);
   data.videos[index].toggleWatched(watched)
-  new VideoPartiaView(data.videos[index]).update()
+  new VideoLockupView(data.videos[index]).update()
   new WatchedButtonView(data.videos[index]).update()
 };
 
@@ -38,24 +38,9 @@ getVideoByID = function(id) {
   return data.videos[index];
 };
 
-getVideoFromElement = function(element) {
-  const id = elementAttribute(element, "videoID") * 1;
-  const index = indexOfVideoID(id);
-  return data.videos[index];
-};
-
 indexOfVideoID = function(id) {
   id = id * 1;
   return data.videos.findIndex(video => video.id === id);
-};
-
-elementAttribute = function(element, attribute) {
-  let attr;
-  if ((attr = element.attributes.getNamedItem(attribute))) {
-    return attr.value;
-  } else {
-    return null;
-  }
 };
 
 debounce = function(func, threshold, execAsap) {

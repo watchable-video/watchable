@@ -1,54 +1,65 @@
-eventHandler = function(event) {
-  let action;
-  if (action = elementAttribute(event.target, "action")) {
-    const handler = `${event.type}${action}`;
-    return this[handler](event);
+class EventHandler {
+  constructor(event) {
+    this.event = event;
+    this.type = event.type;
+
+    const action = this._elementAttribute("action");
+    if (action) {
+      this[action]();
+    }
   }
-};
 
-selectLoadPage = function(event) {
-  const menuItemDocument = event.target.parentNode.getFeature("MenuBarDocument");
-  const page = elementAttribute(event.target, "page");
-  this[page](event.target, menuItemDocument);
-};
+  static newFromEvent(event) {
+    return new EventHandler(event);
+  }
 
-selectVideoLockup = function(event) {
-  const video = getVideoFromElement(event.target);
-  const view = new VideoDetailView(video);
-  return setActiveDocument(view.render(), "push");
-};
+  loadPage() {
+    const menuItemDocument = this.event.target.parentNode.getFeature("MenuBarDocument");
+    const page = this._elementAttribute("page");
+    console.log(["page", page]);
+    pages[page](this.event.target, menuItemDocument);
+  }
 
-playVideoLockup = function(event) {
-  const video = getVideoFromElement(event.target);
-  play(video);
-};
+  videoLockup() {
+    if (this.type == "play") {
+      const video = this._getVideoFromElement();
+      play(video);
+    } else if (this.type == "select") {
+      const video = this._getVideoFromElement();
+      const view = new VideoDetailView(video);
+      return setActiveDocument(view.render(), "push");
+    }
+  }
 
-selectSearchResult = function(event) {
-  const video = getVideoFromElement(event.target);
-  play(video);
-};
+  searchResult() {
+    const video = this._getVideoFromElement();
+    play(video);
+  }
 
-playSearchResult = function(event) {
-  const video = getVideoFromElement(event.target);
-  play(video);
-};
+  videoPlay() {
+    const video = this._getVideoFromElement();
+    play(video);
+  }
 
-playVideoPlay = function(event) {
-  const video = getVideoFromElement(event.target);
-  play(video);
-};
+  toggleWatched() {
+    const video = this._getVideoFromElement();
+    toggleWatched(video);
+  }
 
-selectVideoPlay = function(event) {
-  const video = getVideoFromElement(event.target);
-  play(video);
-};
+  _getVideoFromElement() {
+    const id = this._elementAttribute("videoID") * 1;
+    const index = indexOfVideoID(id);
+    return data.videos[index];
+  };
 
-playToggleWatched = function(event) {
-  const video = getVideoFromElement(event.target);
-  toggleWatched(video);
-};
+  _elementAttribute(attribute) {
+    let attr = this.event.target.attributes.getNamedItem(attribute);
+    if (attr) {
+      return attr.value;
+    } else {
+      return null;
+    }
+  };
 
-selectToggleWatched = function(event) {
-  const video = getVideoFromElement(event.target);
-  toggleWatched(video);
-};
+
+}

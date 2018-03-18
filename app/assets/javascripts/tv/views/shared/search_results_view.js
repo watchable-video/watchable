@@ -34,7 +34,7 @@ class SearchResultsView extends View {
     request("GET", uri).then((response) => {
       data.videos = JSON.parse(response).map(data => new Video(data));
       this.markup = data.videos
-        .map((video, index) => new VideoLockupView(video, "SearchResult").template())
+        .map((video, index) => new VideoLockupView(video, "searchResult").template())
         .join("");
       super.update()
     });
