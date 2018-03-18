@@ -23,7 +23,8 @@ activationPage = function(error) {
     });
 
     poll("authenticate").then(function(response) {
-      setActiveDocument(loadingView("Loading your subscriptions…"));
+      let view = new LoadingView("Loading your subscriptions…");
+      setActiveDocument(view.render());
       return poll("sync_status");
     }).then(function(response) {
       let view = new MenuView();
