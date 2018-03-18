@@ -1,10 +1,8 @@
 toggleWatched = function(video, watched) {
-  if (data.activePage !== "searchPage") {
-    const index = indexOfVideoID(video.id);
-    data.videos[index].toggleWatched(watched)
-    updateElement(`videoPartialView_${video.id}`, videoPartialInnerView(data.videos[index]));
-    updateElement(`watchedButtonView_${video.id}`, watchedButtonView(data.videos[index]));
-  }
+  const index = indexOfVideoID(video.id);
+  data.videos[index].toggleWatched(watched)
+  updateElement(`videoPartialView_${video.id}`, new VideoPartialInnerView(data.videos[index]).template());
+  updateElement(`watchedButtonView_${video.id}`, new WatchedButtonView(data.videos[index]).template());
 };
 
 updateElement = function(id, newElement) {

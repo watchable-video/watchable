@@ -14,8 +14,8 @@ selectLoadPage = function(event) {
 
 selectVideoLockup = function(event) {
   const video = getVideoFromElement(event.target);
-  const template = videoDetailView(video);
-  return setActiveDocument(template, "push");
+  const view = new VideoDetailView(video);
+  return setActiveDocument(view.render(), "push");
 };
 
 playVideoLockup = function(event) {

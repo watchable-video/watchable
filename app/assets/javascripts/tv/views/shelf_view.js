@@ -1,8 +1,11 @@
-shelfView = function(videos) {
+class ShelfView extends View {
+  constructor(videos) {
+    super();
+    this.videos = videos
+  }
 
-  videos = videos.map((video, index) => videoPartialView(video));
-
-  const template = `
+  template() {
+    return `
     <document>
       <head>
         <style>
@@ -32,17 +35,16 @@ shelfView = function(videos) {
         <collectionList>
           <shelf>
             <section>
-              ${videos.join("")}
+              ${this._videosTemplate()}
             </section>
           </shelf>
         </collectionList>
       </stackTemplate>
     </document>`;
+  }
 
-  const parser = new DOMParser();
-  const view = parser.parseFromString(template, "application/xml");
+  _videosTemplate() {
+    return this.videos.map((video, index) => new VideoPartialView(video).template()).join("");
+  }
 
-  view.addEventListener("select", eventHandler);
-  view.addEventListener("play", eventHandler);
-  return view;
-};
+}

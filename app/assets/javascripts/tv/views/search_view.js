@@ -1,21 +1,37 @@
-searchView = function() {
+class SearchView extends View {
 
-  const render = function(query, view) {
+  render() {
+    const view = super.render();
+    const searchFields = view.getElementsByTagName('searchField');
+    console.log(["view", view]);
+    for (var i = searchFields.length - 1; i >= 0; i--) {
+      var field = searchFields.item(i);
+      var keyboard = field.getFeature("Keyboard");
+      keyboard.onTextChange = debounce((event) => {
+        const query = keyboard.text;
+        this.displayResult(view, query);
+      }, 400, false);
+    }
+    return view;
+  }
+
+  displayResult (view, query) {
     if ((query !== "") && (query !== null)) {
       let results;
       const uri = url("search");
       uri.addSearch({q: query});
       request("GET", uri).then(function(response) {
         data.videos = JSON.parse(response).map(data => new Video(data));
-        const videos = data.videos.map((video, index) => videoPartialView(video));
+        const videos = data.videos.map((video, index) => new VideoPartialView(video).template());
 
-        updateElement("searchResults", videos.join(""))
-        updateElement("searchTitle", "Results")
+        updateElement("searchResults", videos.join(""));
+        updateElement("searchTitle", "Results");
       });
     }
-  };
+  }
 
-  const template = `
+  template() {
+    return `
     <document>
       <head>
         <style>
@@ -44,24 +60,6 @@ searchView = function() {
         </collectionList>
       </searchTemplate>
     </document>`;
-
-
-  const parser = new DOMParser();
-  const view = parser.parseFromString(template, "application/xml");
-
-  const searchFields = view.getElementsByTagName('searchField');
-
-  for (var i = searchFields.length - 1; i >= 0; i--) {
-    var field = searchFields.item(i);
-    var keyboard = field.getFeature("Keyboard");
-    keyboard.onTextChange = debounce(function(event) {
-      const query = keyboard.text;
-      render(query, view);
-    }, 400, false);
   }
 
-  view.addEventListener("select", playVideoPlay);
-  view.addEventListener("play", playVideoPlay);
-
-  return view;
-};
+}

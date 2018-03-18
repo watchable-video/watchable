@@ -1,14 +1,17 @@
-loadingView = function(text) {
+class LoadingView extends View {
+  constructor(text) {
+    super();
+    this.text = text || "Loading…";
+  }
 
-  if (text == null) { text = "Loading…"; }
-  const template = `
+  template() {
+    return `
     <document>
       <loadingTemplate>
         <activityIndicator>
-          <title><![CDATA[${text}]]></title>
+          <title><![CDATA[${this.text}]]></title>
         </activityIndicator>
       </loadingTemplate>
     </document>`;
-  const parser = new DOMParser();
-  return parser.parseFromString(template, "application/xml");
-};
+  }
+}

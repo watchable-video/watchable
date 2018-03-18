@@ -7,13 +7,19 @@ App.onLaunch = function(options) {
   data.player.addEventListener("mediaItemWillChange", mediaItemWillChange);
   data.player.addEventListener("timeDidChange", timeDidChange, {interval: 1});
   data.nativeCode = Native.create();
-
-  setActiveDocument(loadingView(), "push");
+  let view = new LoadingView();
+  setActiveDocument(view.render(), "push");
 
   if (data.options.CLOUDKITID) {
-    login();
+    request("GET", url("authenticate")).then(function(response) {
+      let view = new MenuView();
+      setActiveDocument(view.render(), "push");
+    }).catch(function(error) {
+      activationPage(error);
+    });
   } else {
-    setActiveDocument(alertView("Error", "Please sign-in to iCloud in Settings and try again."));
+    let view = new AlertView("Error", "Please sign-in to iCloud in Settings and try again.");
+    setActiveDocument(view.render());
   }
 };
 

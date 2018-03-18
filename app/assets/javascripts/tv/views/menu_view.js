@@ -1,6 +1,7 @@
-menuView = function(videos) {
+class MenuView extends View {
 
-  const template = `
+  template() {
+    return `
     <document>
       <menuBarTemplate>
         <menuBar>
@@ -13,10 +14,6 @@ menuView = function(videos) {
         </menuBar>
       </menuBarTemplate>
     </document>`;
+  }
 
-  const parser = new DOMParser();
-  const view = parser.parseFromString(template, "application/xml");
-
-  view.addEventListener("select", eventHandler);
-  return view;
-};
+}

@@ -1,28 +1,19 @@
-videoPartialView = (video =>
-  `
-  <lockup action="VideoLockup" videoID="${video.id}" id="videoPartialView_${video.id}">
-      ${videoPartialInnerView(video)}
-  </lockup>
-  `
-);
+class VideoPartialView extends View {
 
-videoPartialInnerView = function(video) {
-  const watched = function() {
-    if (video.watched) {
-      var template = `<overlay class="overlay">
-        <badge src="resource://overlay-checkmark" class="resource-watched" />
-      </overlay>`;
-    } else {
-      var template = "";
-    }
-    return template
-  };
+  constructor(video) {
+    super();
+    this.video = video
+  }
 
-  var template = `
-    <img src="${video.poster_frame}" class="image" />
-    <title class="title"><![CDATA[${video.data.snippet.title}]]></title>
-    <subtitle class="subtitle"><![CDATA[${video.subtitle}]]></subtitle>
-    ${watched()}`;
+  template() {
+    return `
+    <lockup action="VideoLockup" videoID="${this.video.id}" id="videoPartialView_${this.video.id}">
+      ${this._videoPartialInnerView()}
+    </lockup>`;
+  }
 
-  return template;
-};
+  _videoPartialInnerView() {
+    return new VideoPartialInnerView(this.video).template()
+  }
+
+}
