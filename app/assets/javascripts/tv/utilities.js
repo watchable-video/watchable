@@ -1,8 +1,8 @@
 toggleWatched = function(video, watched) {
   const index = indexOfVideoID(video.id);
   data.videos[index].toggleWatched(watched)
-  updateElement(`videoPartialView_${video.id}`, new VideoPartialInnerView(data.videos[index]).template());
-  updateElement(`watchedButtonView_${video.id}`, new WatchedButtonView(data.videos[index]).template());
+  new VideoPartiaView(data.videos[index]).update()
+  new WatchedButtonView(data.videos[index]).update()
 };
 
 updateElement = function(id, newElement) {

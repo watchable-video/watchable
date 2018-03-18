@@ -2,32 +2,27 @@ class SearchView extends View {
 
   render() {
     const view = super.render();
-    const searchFields = view.getElementsByTagName('searchField');
-    console.log(["view", view]);
-    for (var i = searchFields.length - 1; i >= 0; i--) {
-      var field = searchFields.item(i);
-      var keyboard = field.getFeature("Keyboard");
+    const searchFields = view.getElementsByTagName("searchField");
+    for (let index = searchFields.length - 1; index >= 0; index--) {
+      let field = searchFields.item(index);
+      let keyboard = field.getFeature("Keyboard");
       keyboard.onTextChange = debounce((event) => {
         const query = keyboard.text;
-        this.displayResult(view, query);
+        if (query) {
+          this.displayResult(query);
+        }
       }, 400, false);
     }
     return view;
   }
 
-  displayResult (view, query) {
-    if ((query !== "") && (query !== null)) {
-      let results;
-      const uri = url("search");
-      uri.addSearch({q: query});
-      request("GET", uri).then(function(response) {
-        data.videos = JSON.parse(response).map(data => new Video(data));
-        const videos = data.videos.map((video, index) => new VideoPartialView(video).template());
-
-        updateElement("searchResults", videos.join(""));
-        updateElement("searchTitle", "Results");
-      });
-    }
+  displayResult (query) {
+    const uri = url("search");
+    uri.addSearch({q: query});
+    request("GET", uri).then((response) => {
+      data.videos = JSON.parse(response).map(data => new Video(data));
+      updateElement("searchResults", this._searchResults("Results", data.videos));
+    });
   }
 
   template() {
@@ -50,16 +45,22 @@ class SearchView extends View {
       <searchTemplate>
         <searchField/>
         <collectionList>
-          <grid>
-            <header>
-              <title id="searchTitle"></title>
-            </header>
-            <section id="searchResults">
-            </section>
+          <grid id="searchResults">
+          ${this._searchResults()}
           </grid>
         </collectionList>
       </searchTemplate>
     </document>`;
   }
 
+  _searchResults(title = "", videos) {
+    const markup = videos ? videos.map((video, index) => new VideoLockupView(video).template()).join("") : "";
+    return `
+    <header>
+      <title><![CDATA[${title}]]></title>
+    </header>
+    <section>
+      ${markup}
+    </section>`;
+  }
 }

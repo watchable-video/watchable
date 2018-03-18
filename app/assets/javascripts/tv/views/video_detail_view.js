@@ -29,9 +29,7 @@ class VideoDetailView extends View {
                 <badge src="resource://button-play" />
                 <title>Play</title>
               </buttonLockup>
-              <buttonLockup action="ToggleWatched" videoID="${this.video.id}" id="watchedButtonView_${this.video.id}">
               ${this._watchedButtonView()}
-              </buttonLockup>
             </row>
           </stack>
 
@@ -43,7 +41,7 @@ class VideoDetailView extends View {
   }
 
   _watchedButtonView() {
-    let view = new WatchedButtonView(this.video);
+    const view = new WatchedButtonView(this.video);
     return view.template();
   }
 
