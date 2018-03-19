@@ -1,12 +1,13 @@
 config = {}
 config.paths = {
-    video_watch: "<%= Rails.application.routes.url_helpers.tv_video_watch_path(999) %>",
+    video_watch: "<%= Rails.application.routes.url_helpers.tv_video_watch_path(999, format: :json) %>",
     videos: "<%= Rails.application.routes.url_helpers.tv_videos_path(format: :json) %>",
     search: "<%= Rails.application.routes.url_helpers.new_tv_search_path(format: :json) %>",
     media_location: "<%= Rails.application.routes.url_helpers.new_tv_media_location_path(format: :json) %>",
     authenticate: "<%= Rails.application.routes.url_helpers.new_tv_authenticate_path(format: :json) %>",
     activation_token: "<%= Rails.application.routes.url_helpers.tv_activation_tokens_path(format: :json) %>",
     sync_status: "<%= Rails.application.routes.url_helpers.sync_status_tv_authenticate_path(format: :json) %>",
+    video_channel: "<%= Rails.application.routes.url_helpers.tv_video_channel_path(999, format: :json) %>",
 }
 
 url = (key, id = null) => URI(config.paths[key].replace("999", id));

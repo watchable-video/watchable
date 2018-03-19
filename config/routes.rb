@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get :sync_status
       end
     end
+    resources :video_channels, id: /[^\.]+/
     resources :videos do
       scope module: "videos" do
         resource :watch

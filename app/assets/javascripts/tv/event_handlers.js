@@ -38,7 +38,13 @@ class EventHandler {
 
   searchResultChannel() {
     const channel = this._getChannelFromElement();
-    console.log(channel);
+    const uri = url("video_channel", channel.youtube_id)
+    request("GET", uri).then((response) => {
+      const data = JSON.parse(response);
+      const channel = new Channel(data);
+      let view = new ChannelView(channel);
+      setActiveDocument(view.render(), "push");
+    });
   }
 
   videoPlay() {

@@ -10,8 +10,12 @@ class GoogleClient
     @id = id
   end
 
+  def channel(channel_id)
+    client.list_channels("snippet,contentDetails,statistics", id: channel_id).items.first
+  end
+
   def channel_videos(playlist_id, max_results = 5)
-    items = client.list_playlist_items("snippet,contentDetails", max_results: 5, playlist_id: playlist_id).items
+    items = client.list_playlist_items("snippet,contentDetails", max_results: max_results, playlist_id: playlist_id).items
     video_ids = items.map {|item| item.snippet.resource_id.video_id }
     client.list_videos("snippet,contentDetails,statistics", id: video_ids.join(",")).items
   end

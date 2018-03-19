@@ -7,7 +7,11 @@ class VideoChannel
   end
 
   def youtube_id
-    @data.id.channel_id
+    youtube_id = @data.id
+    if youtube_id.respond_to?(:channel_id)
+      youtube_id = youtube_id.channel_id
+    end
+    youtube_id
   end
 
   def data
@@ -16,6 +20,10 @@ class VideoChannel
 
   def poster_frame
     @data.snippet.thumbnails.high.url
+  end
+
+  def uploads_playlist
+    @data.content_details.related_playlists.uploads
   end
 
   private
