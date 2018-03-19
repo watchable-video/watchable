@@ -1,8 +1,7 @@
 toggleWatched = function(video, watched) {
-  const index = indexOfVideoID(video.id);
-  data.videos[index].toggleWatched(watched)
-  new VideoLockupView(data.videos[index]).update()
-  new WatchedButtonView(data.videos[index]).update()
+  video.toggleWatched(watched)
+  new VideoLockupView(video).update()
+  new WatchedButtonView(video).update()
 };
 
 updateElement = function(id, newElement) {
@@ -34,13 +33,30 @@ setActiveDocument = function(document, method) {
 };
 
 getVideoByID = function(id) {
-  const index = indexOfVideoID(id);
+  id = id * 1
+  return getVideos().find(function(video, index, array) {
+    return video.id === id;
+  });
+};
+
+getVideoByIndex = function(index) {
   return data.videos[index];
 };
 
-indexOfVideoID = function(id) {
-  id = id * 1;
-  return data.videos.findIndex(video => video.id === id);
+getVideos = function(index) {
+  return data.videos;
+};
+
+setVideos = function(videos) {
+  data.videos = videos;
+  return getVideos();
+};
+
+getNextVideo = function(currentVideo) {
+  const currentIndex = getVideos().findIndex(video => video.id === currentVideo.id);
+  return getVideos().find(function(item, index, array) {
+    return index > currentIndex && item.type === "video" && item.watched === false;
+  });
 };
 
 indexOfChannelID = function(id) {

@@ -1,7 +1,7 @@
 class ShelfView extends View {
-  constructor(videos) {
+  constructor() {
     super();
-    this.videos = videos
+    this.videos = getVideos()
   }
 
   template() {

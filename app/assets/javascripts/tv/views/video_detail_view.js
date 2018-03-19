@@ -7,7 +7,7 @@ class VideoDetailView extends View {
 
   template() {
     return `
-    <document id="videoDetailView_${this.video.id}">
+    <document>
       <productTemplate theme="dark">
         <banner>
 

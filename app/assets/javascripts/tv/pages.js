@@ -5,8 +5,9 @@ pages = {
   },
   subscriptionsPage: function(menuItem, menuItemDocument) {
     request("GET", url("videos")).then(function(response) {
-      data.videos = JSON.parse(response).map(data => new Video(data));
-      let view = new ShelfView(data.videos);
+      let videos = JSON.parse(response).map(data => new Video(data));
+      setVideos(videos);
+      let view = new ShelfView();
       menuItemDocument.setDocument(view.render(), menuItem);
     }).catch(function(error) {
       const view = new AlertView("Unable to load videos", error);

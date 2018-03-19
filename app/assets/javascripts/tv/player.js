@@ -8,11 +8,11 @@ play = function(video) {
 }
 
 enqueueNextItem = function() {
-  const index = data.player.playlist.length - 1;
-  const lastItem = data.player.playlist.item(index);
-  const currentIndex = indexOfVideoID(lastItem.externalID);
-  const nextVideo = data.videos[currentIndex + 1];
-  nextVideo.toMediaItem().then(item => data.player.playlist.push(item));
+  const currentVideo = getVideoByID(data.player.currentMediaItem.externalID);
+  const nextVideo = getNextVideo(currentVideo);
+  if (nextVideo && !playlistIncludes(nextVideo)) {
+    nextVideo.toMediaItem().then(item => data.player.playlist.push(item));
+  }
 };
 
 mediaItemDidChange = (event => enqueueNextItem());
@@ -35,3 +35,15 @@ timeDidChange = function(event) {
     toggleWatched(video, true);
   }
 };
+
+playlistIncludes = function(video) {
+  for (let index = data.player.playlist.length - 1; index >= 0; index--) {
+    let item = data.player.playlist.item(index);
+    let playlistVideo = getVideoByID(item.externalID);
+    if (playlistVideo.id === video.id) {
+      return true;
+    }
+  }
+  return false;
+}
+

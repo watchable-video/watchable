@@ -59,8 +59,7 @@ class EventHandler {
 
   _getVideoFromElement() {
     const id = this._elementAttribute("dataID") * 1;
-    const index = indexOfVideoID(id);
-    return data.videos[index];
+    return getVideoByID(id);
   };
 
   _getChannelFromElement() {
