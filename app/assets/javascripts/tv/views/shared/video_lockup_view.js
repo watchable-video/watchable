@@ -8,7 +8,7 @@ class VideoLockupView extends View {
 
   template() {
     return `
-    <lockup action="${this.action}" videoID="${this.video.id}" id="${this._id()}">
+    <lockup action="${this.action}" dataID="${this.video.id}" id="${this._id()}">
       ${this._innerHTML()}
     </lockup>`;
   }

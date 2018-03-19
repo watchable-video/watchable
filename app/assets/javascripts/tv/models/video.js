@@ -16,6 +16,14 @@ class Video {
     }
   }
 
+  title() {
+    return this.data.snippet.title;
+  }
+
+  subhead() {
+    return this.subtitle;
+  }
+
   viewCount() {
     return this._formatNumber(this.data.statistics.view_count)
   }

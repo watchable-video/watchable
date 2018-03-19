@@ -31,9 +31,14 @@ class EventHandler {
     }
   }
 
-  searchResult() {
+  searchResultVideo() {
     const video = this._getVideoFromElement();
     play(video);
+  }
+
+  searchResultChannel() {
+    const channel = this._getChannelFromElement();
+    console.log(channel);
   }
 
   videoPlay() {
@@ -47,9 +52,15 @@ class EventHandler {
   }
 
   _getVideoFromElement() {
-    const id = this._elementAttribute("videoID") * 1;
+    const id = this._elementAttribute("dataID") * 1;
     const index = indexOfVideoID(id);
     return data.videos[index];
+  };
+
+  _getChannelFromElement() {
+    const id = this._elementAttribute("dataID") * 1;
+    const index = indexOfChannelID(id);
+    return data.channels[index];
   };
 
   _elementAttribute(attribute) {

@@ -25,7 +25,7 @@ class VideoDetailView extends View {
 
             <description><![CDATA[${this.video.data.snippet.description}]]></description>
             <row>
-              <buttonLockup action="videoPlay" videoID="${this.video.id}">
+              <buttonLockup action="videoPlay" dataID="${this.video.id}">
                 <badge src="resource://button-play" />
                 <title>Play</title>
               </buttonLockup>

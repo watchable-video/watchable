@@ -32,10 +32,26 @@ class SearchResultsView extends View {
     const uri = url("search");
     uri.addSearch({q: this.query});
     request("GET", uri).then((response) => {
-      data.videos = JSON.parse(response).map(data => new Video(data));
-      this.markup = data.videos
-        .map((video, index) => new VideoLockupView(video, "searchResult").template())
-        .join("");
+
+      data.videos = [];
+      data.channels = [];
+
+      let items = JSON.parse(response).map(function(item) {
+        if (item.type == "video") {
+          let video = new Video(item);
+          data.videos.push(video);
+          return video;
+        } else if (item.type == "videochannel") {
+          let channel = new Channel(item);
+          data.channels.push(channel);
+          return channel;
+        }
+      });
+
+      this.markup = items.map((item, index) => {
+        return new SearchLockupView(item).template();
+      }).join("");
+
       super.update()
     });
   }

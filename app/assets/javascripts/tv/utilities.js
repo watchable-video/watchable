@@ -43,6 +43,11 @@ indexOfVideoID = function(id) {
   return data.videos.findIndex(video => video.id === id);
 };
 
+indexOfChannelID = function(id) {
+  id = id * 1;
+  return data.channels.findIndex(channel => channel.id === id);
+};
+
 debounce = function(func, threshold, execAsap) {
   let timeout = null;
   return function(...args) {
