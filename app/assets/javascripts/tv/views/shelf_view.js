@@ -1,7 +1,7 @@
 class ShelfView extends View {
   constructor() {
     super();
-    this.videos = getVideos()
+    this.videos = getVideos("subscriptions")
   }
 
   template() {
@@ -44,7 +44,7 @@ class ShelfView extends View {
   }
 
   _videosTemplate() {
-    return this.videos.map((video, index) => new VideoLockupView(video).template()).join("");
+    return this.videos.map((video, index) => new VideoLockupView(video, "subscriptions").template()).join("");
   }
 
 }

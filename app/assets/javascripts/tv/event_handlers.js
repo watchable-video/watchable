@@ -23,17 +23,19 @@ class EventHandler {
   videoLockup() {
     if (this.type == "play") {
       const video = this._getVideoFromElement();
-      play(video);
+      const collection = this._getCollectionFromElement();
+      play(video, collection);
     } else if (this.type == "select") {
       const video = this._getVideoFromElement();
-      const view = new VideoDetailView(video);
+      const view = new VideoDetailView(video, "subscriptions");
       return setActiveDocument(view.render(), "push");
     }
   }
 
   searchResultVideo() {
     const video = this._getVideoFromElement();
-    play(video);
+    const collection = this._getCollectionFromElement();
+    play(video, collection);
   }
 
   searchResultChannel() {
@@ -42,14 +44,18 @@ class EventHandler {
     request("GET", uri).then((response) => {
       const data = JSON.parse(response);
       const channel = new Channel(data);
-      let view = new ChannelView(channel);
+      const videos = channel.videos.map(data => new Video(data));
+
+      setVideos(videos, "channel")
+      let view = new ChannelView(channel, videos);
       setActiveDocument(view.render(), "push");
     });
   }
 
   videoPlay() {
     const video = this._getVideoFromElement();
-    play(video);
+    const collection = this._getCollectionFromElement();
+    play(video, collection);
   }
 
   toggleWatched() {
@@ -59,7 +65,12 @@ class EventHandler {
 
   _getVideoFromElement() {
     const id = this._elementAttribute("dataID") * 1;
-    return getVideoByID(id);
+    const collection = this._getCollectionFromElement();
+    return getVideoByID(id, collection);
+  };
+
+  _getCollectionFromElement() {
+    return this._elementAttribute("collection");
   };
 
   _getChannelFromElement() {

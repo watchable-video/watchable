@@ -7,6 +7,7 @@ App.onLaunch = function(options) {
   data.player.addEventListener("mediaItemWillChange", mediaItemWillChange);
   data.player.addEventListener("timeDidChange", timeDidChange, {interval: 1});
   data.nativeCode = Native.create();
+  data.collections = {}
   let view = new LoadingView();
   setActiveDocument(view.render(), "push");
 

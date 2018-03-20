@@ -48,11 +48,11 @@ class SearchResultsView extends View {
         }
       });
 
-      setVideos(videos);
+      setVideos(videos, "search");
       data.channels = channels;
 
       this.markup = items.map((item, index) => {
-        return new SearchLockupView(item).template();
+        return new SearchLockupView(item, "search").template();
       }).join("");
 
       super.update()

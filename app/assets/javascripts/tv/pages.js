@@ -6,7 +6,7 @@ pages = {
   subscriptionsPage: function(menuItem, menuItemDocument) {
     request("GET", url("videos")).then(function(response) {
       let videos = JSON.parse(response).map(data => new Video(data));
-      setVideos(videos);
+      setVideos(videos, "subscriptions");
       let view = new ShelfView();
       menuItemDocument.setDocument(view.render(), menuItem);
     }).catch(function(error) {

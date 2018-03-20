@@ -1,8 +1,9 @@
 class ChannelView extends View {
 
-  constructor(channel) {
+  constructor(channel, videos) {
     super();
     this.channel = channel;
+    this.videos = videos;
   }
 
   template() {
@@ -48,7 +49,7 @@ class ChannelView extends View {
   }
 
   _videosTemplate() {
-    return this.channel.videos.map((video, index) => new VideoLockupView(video).template()).join("");
+    return this.videos.map((video, index) => new VideoLockupView(video, "channel", "searchResultVideo").template()).join("");
   }
 
 

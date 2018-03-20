@@ -1,8 +1,9 @@
 class VideoDetailView extends View {
 
-  constructor(video) {
+  constructor(video, collection) {
     super();
     this.video = video;
+    this.collection = collection;
   }
 
   template() {
@@ -25,7 +26,7 @@ class VideoDetailView extends View {
 
             <description><![CDATA[${this.video.data.snippet.description}]]></description>
             <row>
-              <buttonLockup action="videoPlay" dataID="${this.video.id}">
+              <buttonLockup action="videoPlay" dataID="${this.video.id}" collection="${this.collection}">
                 <badge src="resource://button-play" />
                 <title>Play</title>
               </buttonLockup>
@@ -41,7 +42,7 @@ class VideoDetailView extends View {
   }
 
   _watchedButtonView() {
-    const view = new WatchedButtonView(this.video);
+    const view = new WatchedButtonView(this.video, "subscriptions");
     return view.template();
   }
 

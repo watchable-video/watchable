@@ -1,13 +1,14 @@
 class WatchedButtonView extends View {
 
-  constructor(video) {
+  constructor(video, collection) {
     super();
-    this.video = video
+    this.video = video;
+    this.collection = collection;
   }
 
   template() {
     return `
-    <buttonLockup action="toggleWatched" dataID="${this.video.id}" id="${this._id()}">
+    <buttonLockup action="toggleWatched" dataID="${this.video.id}" id="${this._id()}" collection="${this.collection}">
       ${this._innerHTML()}
     </buttonLockup>`;
   }
