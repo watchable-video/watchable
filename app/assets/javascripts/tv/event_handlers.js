@@ -16,7 +16,6 @@ class EventHandler {
   loadPage() {
     const menuItemDocument = this.event.target.parentNode.getFeature("MenuBarDocument");
     const page = this._elementAttribute("page");
-    console.log(["page", page]);
     pages[page](this.event.target, menuItemDocument);
   }
 

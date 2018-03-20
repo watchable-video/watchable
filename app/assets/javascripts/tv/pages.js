@@ -4,18 +4,22 @@ pages = {
     menuItemDocument.setDocument(view.render(), menuItem);
   },
   subscriptionsPage: function(menuItem, menuItemDocument) {
-    request("GET", url("videos")).then(function(response) {
-      let videos = JSON.parse(response).map(data => new Video(data));
-      setVideos(videos, "subscriptions");
+    if (data.collections.subscriptions) {
       let view = new ShelfView();
       menuItemDocument.setDocument(view.render(), menuItem);
-    }).catch(function(error) {
-      const view = new AlertView("Unable to load videos", error);
-      navigationDocument.presentModal(view.render());
-    });
+    } else {
+      request("GET", url("videos")).then(function(response) {
+        let videos = JSON.parse(response).map(data => new Video(data));
+        setVideos(videos, "subscriptions");
+        let view = new ShelfView();
+        menuItemDocument.setDocument(view.render(), menuItem);
+      }).catch(function(error) {
+        const view = new AlertView("Unable to load videos", error);
+        navigationDocument.presentModal(view.render());
+      });
+    }
   }
 }
-
 
 activationPage = function(error) {
   if (error.status === 404) {

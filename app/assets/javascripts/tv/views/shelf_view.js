@@ -34,8 +34,8 @@ class ShelfView extends View {
         </banner>
         <collectionList>
           <shelf>
-            <section>
-              ${this._videosTemplate()}
+            <section id="${this._id()}">
+              ${this._innerHTML()}
             </section>
           </shelf>
         </collectionList>
@@ -43,8 +43,13 @@ class ShelfView extends View {
     </document>`;
   }
 
-  _videosTemplate() {
+  _innerHTML() {
     return this.videos.map((video, index) => new VideoLockupView(video, "subscriptions").template()).join("");
   }
+
+  _id() {
+    return this.constructor.name;
+  }
+
 
 }
