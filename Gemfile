@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem "rails", "~> 5.2.0.rc1"
+gem "rails", "~> 5.2.0.rc2"
 gem "pg"
 gem "puma", "~> 3.7"
 gem "sass-rails", "~> 5.0"
@@ -22,6 +22,7 @@ gem "clockwork"
 gem "dalli"
 gem "googleauth"
 gem "google-api-client", "> 0.7"
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

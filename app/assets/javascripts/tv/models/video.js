@@ -30,15 +30,19 @@ class Video {
 
   toMediaItem() {
     return new Promise((resolve, reject) => {
-      const location = data.nativeCode.videoLocation(this.youtube_id);
-      if (location === "") {
-        const uri = url("media_location").addSearch({youtube_id: this.youtube_id});
-        request("GET", uri).then((response) => {
-          const data = JSON.parse(response);
-          resolve(this._mediaItem(data["location"]));
-        });
+      if (this.video_file_url) {
+        resolve(this._mediaItem(this.video_file_url));
       } else {
-        resolve(this._mediaItem(location));
+        const location = data.nativeCode.videoLocation(this.youtube_id);
+        if (location === "") {
+          const uri = url("media_location", this.id);
+          request("GET", uri).then((response) => {
+            const data = JSON.parse(response);
+            resolve(this._mediaItem(data["location"]));
+          });
+        } else {
+          resolve(this._mediaItem(location));
+        }
       }
     });
   }

@@ -1,7 +1,8 @@
-class Tv::MediaLocationsController < Tv::BaseController
+class Tv::Videos::MediaLocationsController < Tv::BaseController
 
-  def new
-    @location = youtube_dl_api_request(params["youtube_id"])
+  def show
+    video = @account.videos.find(params[:video_id])
+    @location = youtube_dl_api_request(video.youtube_id)
   end
 
   private

@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   namespace :tv do
     get :app
     resource :search
-    resource :media_location
     resources :activation_tokens
     resource :authenticate do
       member do
@@ -25,6 +24,7 @@ Rails.application.routes.draw do
     resources :videos do
       scope module: "videos" do
         resource :watch
+        resource :media_location
       end
     end
   end

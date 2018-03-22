@@ -1,5 +1,9 @@
 class Video < ApplicationRecord
 
+  after_create_commit :process_video_file
+
+  has_one_attached :video_file
+
   def self.new_from_api(account, data)
     youtube_id = data.id
     if youtube_id.respond_to?(:video_id)
@@ -47,6 +51,10 @@ class Video < ApplicationRecord
     new_record?
   end
 
+  def video_file_url
+    video_file.service_url(expires_in: 1.week) if video_file.attached?
+  end
+
   private
 
     def cache_key
@@ -55,6 +63,10 @@ class Video < ApplicationRecord
       else
         youtube_id
       end
+    end
+
+    def process_video_file
+      ProcessVideoJob.perform_later self
     end
 
 end
