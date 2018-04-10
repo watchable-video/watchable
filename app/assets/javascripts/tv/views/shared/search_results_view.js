@@ -29,9 +29,10 @@ class SearchResultsView extends View {
   }
 
   update() {
+    data.searchRequest.cancel();
     const uri = url("search");
     uri.addSearch({q: this.query});
-    request("GET", uri).then((response) => {
+    request("GET", uri, data.searchRequest).then((response) => {
 
       let videos = [];
       let channels = [];

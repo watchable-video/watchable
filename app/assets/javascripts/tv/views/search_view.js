@@ -2,6 +2,8 @@ class SearchView extends View {
 
   render() {
     const view = super.render();
+    view.addEventListener("highlight", (event) => {
+    });
     const searchFields = view.getElementsByTagName("searchField");
     for (let index = searchFields.length - 1; index >= 0; index--) {
       let field = searchFields.item(index);

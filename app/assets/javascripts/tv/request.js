@@ -1,5 +1,5 @@
-request = (method, uri) => new Promise(function(resolve, reject) {
-  const xhr = new XMLHttpRequest;
+request = (method, uri, token) => new Promise(function(resolve, reject) {
+  const xhr = new XMLHttpRequest();
 
   const base = URI(data.options.BASEURL);
   uri.hostname(base.hostname());
@@ -11,7 +11,6 @@ request = (method, uri) => new Promise(function(resolve, reject) {
 
   const href = uri.href();
 
-  xhr.open(method, href);
   xhr.onload = function() {
     if ((this.status >= 200) && (this.status < 300)) {
       resolve(xhr.response);
@@ -30,5 +29,13 @@ request = (method, uri) => new Promise(function(resolve, reject) {
     });
   };
 
+  if (token) {
+    token.cancel = function() {
+      xhr.abort();
+      reject();
+    };
+  }
+
+  xhr.open(method, href);
   xhr.send();
 });

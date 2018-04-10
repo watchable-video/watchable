@@ -52,7 +52,9 @@ class Video < ApplicationRecord
   end
 
   def video_file_url
-    video_file.service_url(expires_in: 1.week) if video_file.attached?
+    if persisted? && video_file.attached?
+      video_file.service_url(expires_in: 1.week)
+    end
   end
 
   private
