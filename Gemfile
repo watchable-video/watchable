@@ -21,7 +21,7 @@ gem "foreman"
 gem "clockwork"
 gem "dalli"
 gem "googleauth"
-gem "google-api-client", "> 0.7"
+gem "google-api-client", "= 0.19.8"
 gem "aws-sdk-s3", require: false
 
 group :development, :test do
