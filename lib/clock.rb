@@ -9,3 +9,7 @@ every(1.hour, 'clockwork.hourly') do
     RefreshJob.perform_later account
   end
 end
+
+every(24.hours, 'clockwork.daily') do
+  DeleteVideoFileJob.perform_later
+end
