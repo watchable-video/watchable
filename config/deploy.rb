@@ -1,9 +1,9 @@
-lock "3.10.1"
+lock "3.11"
 
 set :branch, "master"
 
-set :application, "tube"
-set :repo_url, "git@github.com:feedbin/#{fetch(:application)}.git"
+set :application, "watchable"
+set :repo_url, "git@github.com:watchable-video/#{fetch(:application)}.git"
 set :deploy_to, "/srv/apps/#{fetch(:application)}"
 set :rbenv_type, :system
 set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
