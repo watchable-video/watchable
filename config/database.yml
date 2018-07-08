@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: tube_development
+  database: watchable_development
   pool: 5
   username: <%= ENV['POSTGRES_USERNAME'] %>
   password:
@@ -9,7 +9,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: tube_test
+  database: watchable_test
   pool: 5
   username: <%= ENV['POSTGRES_USERNAME'] %>
   password:

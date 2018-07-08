@@ -1,1 +1,1 @@
-Rails.application.config.session_store :cookie_store, key: '_tube_session'
+Rails.application.config.session_store :cookie_store, key: '_watchable_session'
