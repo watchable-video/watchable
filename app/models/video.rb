@@ -57,7 +57,24 @@ class Video < ApplicationRecord
     end
   end
 
+  def title
+    original = title_parts.first || self.data.dig("snippet", "title")
+    original.sub("#{self.data.dig("snippet", "channel_title")}: ", "")
+  end
+
+  def subtitle
+    title_parts.drop(1) - [self.data.dig("snippet", "channel_title")]
+  end
+
   private
+
+    def title_parts
+      if title = self.data.dig("snippet", "title")
+        title.split(/\s[\|-—]\s/)
+      else
+        []
+      end
+    end
 
     def cache_key
       if persisted?
