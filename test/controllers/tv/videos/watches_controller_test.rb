@@ -7,7 +7,7 @@ module Tv
         video = videos(:one)
         assert_not video.reload.watched
 
-        post tv_video_watch_path(video.id), params: {cloudkit_id: video[:cloudkit_id]}
+        delete tv_video_watch_path(video.id), params: {cloudkit_id: video[:cloudkit_id]}
         assert_response :success
         assert video.reload.watched
       end
