@@ -13,7 +13,7 @@ class VideoDetailView extends View {
         <banner>
 
           <stack>
-            <title style="font-size: 45pt;"><![CDATA[${this.video.data.snippet.title}]]></title>
+            <title style="font-size: 45pt;"><![CDATA[${this.video.title}]]></title>
             <row>
               <text style="font-weight: bold;"><![CDATA[${this.video.data.snippet.channel_title}]]></text>
             </row>

@@ -27,7 +27,7 @@ class ParsedTitle
     end
 
     def title_parts
-      @original_title.split(/\s[\|-—-]\s/)
+      @original_title.split(/\s[\|-—-——]\s/)
     end
 
 end

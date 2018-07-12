@@ -17,7 +17,7 @@ class VideoLockupView extends View {
   _innerHTML() {
     return `
     <img src="${this.video.poster_frame}" class="image" />
-    <title class="title"><![CDATA[${this.video.data.snippet.title}]]></title>
+    <title class="title"><![CDATA[${this.video.title}]]></title>
     <subtitle class="subtitle"><![CDATA[${this.video.subtitle}]]></subtitle>
     ${this._watched()}`;
   }

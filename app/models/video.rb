@@ -62,7 +62,11 @@ class Video < ApplicationRecord
   end
 
   def subtitle
-    parsed_title.subtitle
+    if parsed_title.subtitle.blank?
+      "Posted by #{video_metadata.dig("channel_title")} on #{self.video_published_at.strftime("%B %e, %Y")}"
+    else
+      "Posted by #{video_metadata.dig("channel_title")}: #{parsed_title.subtitle} on #{self.video_published_at.strftime("%B %e, %Y")}"
+    end
   end
 
   private
