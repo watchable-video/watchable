@@ -16,8 +16,8 @@ class Video {
     }
   }
 
-  title() {
-    return this.data.snippet.title;
+  head() {
+    return this.title;
   }
 
   subhead() {

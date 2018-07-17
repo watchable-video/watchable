@@ -6,7 +6,7 @@ class Channel {
     }
   }
 
-  title() {
+  head() {
     return this.data.snippet.channel_title;
   }
 

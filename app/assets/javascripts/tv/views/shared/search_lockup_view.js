@@ -10,7 +10,7 @@ class SearchLockupView extends View {
     return `
     <lockup action="${this.action()}" dataID="${this.item.id}" id="${this._id()}" collection="${this.collection}">
       <img src="${this.item.poster_frame}" class="image" />
-      <title class="title"><![CDATA[${this.item.title()}]]></title>
+      <title class="title"><![CDATA[${this.item.head()}]]></title>
       <subtitle class="subtitle"><![CDATA[${this.item.subhead()}]]></subtitle>
     </lockup>`;
   }
