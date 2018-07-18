@@ -39,15 +39,14 @@ class EventHandler {
 
   searchResultChannel() {
     const channel = this._getChannelFromElement();
-    const uri = url("video_channel", channel.youtube_id)
+    const uri = url("channel", channel.youtube_id)
     request("GET", uri).then((response) => {
       const data = JSON.parse(response);
       const channel = new Channel(data);
-      const videos = channel.videos.map(data => new Video(data));
-
-      setVideos(videos, "channel")
-      let view = new ChannelView(channel, videos);
+      let view = new ChannelView(channel);
       setActiveDocument(view.render(), "push");
+
+      new PlaylistsView().update(channel);
     });
   }
 

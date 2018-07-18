@@ -20,6 +20,8 @@ Rails.application.routes.draw do
         get :sync_status
       end
     end
+    resources :playlists, id: /[^\.]+/
+    resources :channels, id: /[^\.]+/
     resources :video_channels, id: /[^\.]+/
     resources :videos do
       scope module: "videos" do
