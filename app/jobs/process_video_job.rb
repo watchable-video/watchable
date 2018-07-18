@@ -6,10 +6,27 @@ class ProcessVideoJob < ApplicationJob
   def perform(video)
     @video = video
 
-    if path = download
-      video.video_file.attach io: File.open(path), filename: "video.mp4", content_type: "video/mp4"
-      FileUtils.rm(path)
+    if source_path = download
+      FileUtils.mkdir_p File.dirname(full_destination_path)
+
+      File.rename source_path, full_destination_path
+
+      video.update file_path: destination_path
     end
+  end
+
+  private
+
+  def filename
+    Digest::SHA1.hexdigest(video.youtube_id).ext("mp4")
+  end
+
+  def destination_path
+    ["public", "videos", filename]
+  end
+
+  def full_destination_path
+    Rails.root.join(*destination_path)
   end
 
   def download

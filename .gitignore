@@ -24,3 +24,5 @@ vendor/bundle
 storage
 
 .byebug_history
+
+public/videos

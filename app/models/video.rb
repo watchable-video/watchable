@@ -52,8 +52,8 @@ class Video < ApplicationRecord
   end
 
   def video_file_url
-    if persisted? && video_file.attached?
-      video_file.service_url(expires_in: 1.week)
+    if self.file_path.present?
+      URI.join(Rails.application.secrets.default_host, self.file_path.join("/")).to_s
     end
   end
 

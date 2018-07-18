@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_22_180320) do
+ActiveRecord::Schema.define(version: 2018_07_18_225847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2018_03_22_180320) do
     t.jsonb "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "file_path", default: [], array: true
     t.index ["cloudkit_id", "youtube_id"], name: "index_videos_on_cloudkit_id_and_youtube_id", unique: true
   end
 

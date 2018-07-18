@@ -5,7 +5,10 @@ class DeleteVideoFileJob < ApplicationJob
 
   def perform
     Video.where(watched: true).find_each do |video|
-      video.video_file.attached? && video.video_file.purge
+      path = Rails.root.join(*video.file_path)
+      if video.file_path.present? && File.exist?(path)
+        FileUtils.rm(path)
+      end
     end
   end
 
