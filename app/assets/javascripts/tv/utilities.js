@@ -22,6 +22,11 @@ updateElement = function(id, newElement) {
   });
 }
 
+setVideos = function(videos, collection) {
+  data.collections[collection] = videos
+  return getVideos(collection);
+};
+
 setActiveDocument = function(document, method) {
   if (method == null) { method = "replace"; }
   if (method === "push") {
@@ -43,17 +48,20 @@ getVideos = function(collection) {
   return data.collections[collection];
 };
 
-setVideos = function(videos, collection) {
-  data.collections[collection] = videos
-  return getVideos(collection);
-};
-
-getNextVideo = function(currentVideo, collection) {
-  const currentIndex = getVideos(collection).findIndex(video => video.id === currentVideo.id);
+getNextVideo = function(video, collection) {
+  const selectedVideoIndex = currentIndex(video, collection);
   return getVideos(collection).find(function(item, index, array) {
-    return index > currentIndex && item.type === "video" && item.watched === false;
+    return index > selectedVideoIndex && item.type === "video" && item.watched === false;
   });
 };
+
+currentIndex = function(video, collection) {
+  return getVideos(collection).findIndex(item => item.id === video.id);
+}
+
+videosRemaining = function(video, collection) {
+  return getVideos(collection).length - (currentIndex(video, collection) + 1);
+}
 
 indexOfChannelID = function(id) {
   id = id * 1;

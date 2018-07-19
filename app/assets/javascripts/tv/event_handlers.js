@@ -1,9 +1,7 @@
 class EventHandler {
   constructor(event) {
-    this.event = event;
-    this.type = event.type;
-
-    const action = this._elementAttribute("action");
+    this.eventHelper = new EventHelper(event);
+    const action = this.eventHelper.elementAttribute("action");
     if (action) {
       this[action]();
     }
@@ -14,31 +12,30 @@ class EventHandler {
   }
 
   loadPage() {
-    const menuItemDocument = this.event.target.parentNode.getFeature("MenuBarDocument");
-    const page = this._elementAttribute("page");
-    pages[page](this.event.target, menuItemDocument);
+    const page = this.eventHelper.elementAttribute("page");
+    pages[page](this.eventHelper.event.target, this.eventHelper.menuItemDocument());
   }
 
   videoLockup() {
-    if (this.type == "play") {
-      const video = this._getVideoFromElement();
-      const collection = this._getCollectionFromElement();
+    if (this.eventHelper.event.type == "play") {
+      const video = this.eventHelper.getVideoFromElement();
+      const collection = this.eventHelper.getCollectionFromElement();
       play(video, collection);
-    } else if (this.type == "select") {
-      const video = this._getVideoFromElement();
+    } else if (this.eventHelper.event.type == "select") {
+      const video = this.eventHelper.getVideoFromElement();
       const view = new VideoDetailView(video, "subscriptions");
       return setActiveDocument(view.render(), "push");
     }
   }
 
   searchResultVideo() {
-    const video = this._getVideoFromElement();
-    const collection = this._getCollectionFromElement();
+    const video = this.eventHelper.getVideoFromElement();
+    const collection = this.eventHelper.getCollectionFromElement();
     play(video, collection);
   }
 
   searchResultChannel() {
-    const channel = this._getChannelFromElement();
+    const channel = this.eventHelper.getChannelFromElement();
     const uri = url("channel", channel.youtube_id)
     request("GET", uri).then((response) => {
       const data = JSON.parse(response);
@@ -51,40 +48,15 @@ class EventHandler {
   }
 
   videoPlay() {
-    const video = this._getVideoFromElement();
-    const collection = this._getCollectionFromElement();
+    const video = this.eventHelper.getVideoFromElement();
+    const collection = this.eventHelper.getCollectionFromElement();
     play(video, collection);
   }
 
   toggleWatched() {
-    const video = this._getVideoFromElement();
+    const video = this.eventHelper.getVideoFromElement();
     toggleWatched(video);
   }
-
-  _getVideoFromElement() {
-    const id = this._elementAttribute("dataID") * 1;
-    const collection = this._getCollectionFromElement();
-    return getVideoByID(id, collection);
-  };
-
-  _getCollectionFromElement() {
-    return this._elementAttribute("collection");
-  };
-
-  _getChannelFromElement() {
-    const id = this._elementAttribute("dataID") * 1;
-    const index = indexOfChannelID(id);
-    return data.channels[index];
-  };
-
-  _elementAttribute(attribute) {
-    let attr = this.event.target.attributes.getNamedItem(attribute);
-    if (attr) {
-      return attr.value;
-    } else {
-      return null;
-    }
-  };
 
 
 }

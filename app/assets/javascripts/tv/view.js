@@ -3,6 +3,7 @@ class View {
     const template = new DOMParser().parseFromString(this.template(), "application/xml");
     template.addEventListener("select", EventHandler.newFromEvent);
     template.addEventListener("play", EventHandler.newFromEvent);
+    template.addEventListener("highlight", this.highlight);
     return template;
   }
 
@@ -24,5 +25,7 @@ class View {
       }
     });
   }
+
+  highlight(event) {}
 
 }
