@@ -3,13 +3,41 @@ class ChannelView extends View {
   constructor(channel) {
     super();
     this.channel = channel;
+    this.nextPage = null;
+    this.markup = `
+    <header>
+      <title><![CDATA[Loading…]]></title>
+    </header>`;
   }
 
   highlight(event) {
     const eventHelper = new EventHelper(event);
     const remaining = eventHelper.remaining();
-    console.log(this);
-    console.log(remaining);
+    // this.loadMore(remaining)
+  }
+
+  loadMore(remaining) {
+
+  }
+
+  needsMore(remaining) {
+    if (!this.nextPage) {
+      return false;
+    }
+
+    return true;
+  }
+
+  update() {
+    const uri = url("playlist_videos");
+    uri.addSearch({playlist_id: this.channel.uploadsPlaylist()});
+    request("GET", uri).then((response) => {
+      const data = JSON.parse(response);
+      const videos = data.videos.map(data => new Video(data));
+      this.nextPage = data.next_page_token;
+      this.markup = new ChannelSectionView("Uploads", videos).template();
+      super.update()
+    });
   }
 
   template() {
@@ -44,10 +72,20 @@ class ChannelView extends View {
           </stack>
           <heroImg src="${this.channel.poster_frame}" width="666" height="666" />
         </banner>
-        ${new ChannelSectionsView().template()}
+        <shelf id="${this._id()}">
+          ${this._innerHTML()}
+        </shelf>
       </productBundleTemplate>
     </document>
     `;
+  }
+
+  _innerHTML() {
+    return this.markup;
+  }
+
+  _id() {
+    return this.constructor.name;
   }
 
 }
