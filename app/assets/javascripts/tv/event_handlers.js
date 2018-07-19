@@ -42,7 +42,6 @@ class EventHandler {
       const channel = new Channel(data);
       let view = new ChannelView(channel);
       setActiveDocument(view.render(), "push");
-      new ChannelView(channel).update();
     });
   }
 

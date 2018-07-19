@@ -13,7 +13,7 @@ class SearchView extends View {
         if (query) {
           new SearchResultsView(query, "Results").update();
         }
-      }, 400, false);
+      }, 200, false);
     }
     return view;
   }

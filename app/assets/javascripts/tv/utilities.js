@@ -22,8 +22,26 @@ updateElement = function(id, newElement) {
   });
 }
 
+currentDocument = function() {
+  return navigationDocument.documents[navigationDocument.documents.length - 1];
+}
+
+appendTo = function(id, markup) {
+  const element = currentDocument().getElementById(id);
+  if (element) {
+    console.log(markup);
+    element.insertAdjacentHTML("beforeend", markup)
+  }
+}
+
 setVideos = function(videos, collection) {
   data.collections[collection] = videos
+  return getVideos(collection);
+};
+
+appendVideos = function(videos, collection) {
+  data.collections[collection] = data.collections[collection] || []
+  data.collections[collection] = data.collections[collection].concat(videos)
   return getVideos(collection);
 };
 

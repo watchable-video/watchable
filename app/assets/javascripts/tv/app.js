@@ -8,9 +8,7 @@ App.onLaunch = function(options) {
   data.player.addEventListener("timeDidChange", timeDidChange, {interval: 1});
   data.nativeCode = Native.create();
   data.collections = {}
-  data.searchRequest = {
-    cancel: function() {}
-  }
+  data.requests = {}
 
   let view = new LoadingView();
   setActiveDocument(view.render(), "push");
