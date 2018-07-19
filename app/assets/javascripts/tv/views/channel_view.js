@@ -5,6 +5,13 @@ class ChannelView extends View {
     this.channel = channel;
   }
 
+  highlight(event) {
+    const eventHelper = new EventHelper(event);
+    const remaining = eventHelper.remaining();
+    console.log(this);
+    console.log(remaining);
+  }
+
   template() {
     return `
     <document>

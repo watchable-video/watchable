@@ -16,7 +16,7 @@ class RefreshJob < ApplicationJob
   end
 
   def create_and_update_videos(playlist_id)
-    videos = client.channel_videos(playlist_id, 50).each_with_object([]) do |data, updates|
+    videos = client.channel_videos(playlist_id, max_results: 50).items.each_with_object([]) do |data, updates|
       video = Video.new_from_api(account, data)
       video.save!
     rescue ActiveRecord::RecordNotUnique

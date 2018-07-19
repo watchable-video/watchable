@@ -4,12 +4,6 @@ class ShelfView extends View {
     this.videos = getVideos("subscriptions")
   }
 
-  highlight(event) {
-    const eventHelper = new EventHelper(event);
-    const remaining = eventHelper.remaining();
-    console.log(remaining);
-  }
-
   template() {
     return `
     <document>
