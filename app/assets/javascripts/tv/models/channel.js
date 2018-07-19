@@ -14,4 +14,8 @@ class Channel {
     return "Channel";
   }
 
+  uploadsPlaylist() {
+    return this.data.content_details.related_playlists.uploads;
+  }
+
 }

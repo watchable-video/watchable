@@ -21,8 +21,8 @@ Rails.application.routes.draw do
       end
     end
     resources :playlists, id: /[^\.]+/
+    resources :playlist_videos, only: [:index]
     resources :channels, id: /[^\.]+/
-    resources :video_channels, id: /[^\.]+/
     resources :videos do
       scope module: "videos" do
         resource :watch

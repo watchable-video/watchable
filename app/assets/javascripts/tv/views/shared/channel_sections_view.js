@@ -27,7 +27,10 @@ class ChannelSectionsView extends View {
   }
 
   update(channel) {
-    request("GET", url("video_channel", channel.youtube_id)).then((response) => {
+    const uri = url("playlist_videos");
+    uri.addSearch({playlist_id: channel.uploadsPlaylist()});
+
+    request("GET", uri).then((response) => {
 
       const data = JSON.parse(response);
       const videos = data.videos.map(data => new Video(data));
