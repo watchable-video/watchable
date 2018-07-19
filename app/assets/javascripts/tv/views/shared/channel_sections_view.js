@@ -1,4 +1,4 @@
-class PlaylistsView extends View {
+class ChannelSectionsView extends View {
 
   constructor(query, title) {
     super();
@@ -10,8 +10,6 @@ class PlaylistsView extends View {
     </section>`
 
   }
-
-
 
   template() {
     return `
@@ -32,17 +30,17 @@ class PlaylistsView extends View {
     request("GET", url("video_channel", channel.youtube_id)).then((response) => {
 
       const data = JSON.parse(response);
-      var videos = data.videos.map(data => new Video(data));
-      videos = videos.map((video, index) => new VideoLockupView(video, "channel", "searchResultVideo").template()).join("");
+      const videos = data.videos.map(data => new Video(data));
+      const videoMarkup = videos.map((video, index) => new VideoLockupView(video, "channel", "searchResultVideo").template()).join("");
 
-      console.log(videos);
+      setVideos(videos, "channel");
 
       this.markup = `
       <header>
         <title>Uploads</title>
       </header>
       <section>
-      ${videos}
+      ${videoMarkup}
       </section>`
 
       super.update()

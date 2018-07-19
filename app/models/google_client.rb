@@ -18,10 +18,13 @@ class GoogleClient
     client.list_playlists("snippet,contentDetails", max_results: 50, channel_id: channel_id).items
   end
 
-  def channel_videos(playlist_id, max_results = 5, parts = "snippet,contentDetails,statistics")
+  def channel_videos(playlist_id, max_results = 5, full_data = true)
     items = client.list_playlist_items("snippet", max_results: max_results, playlist_id: playlist_id).items
-    video_ids = items.map {|item| item.snippet.resource_id.video_id }
-    client.list_videos(parts, id: video_ids.join(",")).items
+    if full_data
+      video_ids = items.map {|item| item.snippet.resource_id.video_id }
+      items = client.list_videos("snippet,contentDetails,statistics", id: video_ids.join(",")).items
+    end
+    items
   end
 
   def subscribed_playlist_ids

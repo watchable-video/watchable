@@ -6,7 +6,9 @@ class Video < ApplicationRecord
 
   def self.new_from_api(account, data)
     youtube_id = data.id
-    if youtube_id.respond_to?(:video_id)
+    if data.try(:snippet).try(:resource_id).try(:video_id)
+      youtube_id = data.snippet.resource_id.video_id
+    elsif youtube_id.respond_to?(:video_id)
       youtube_id = youtube_id.video_id
     end
     Video.new(

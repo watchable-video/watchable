@@ -46,7 +46,7 @@ class EventHandler {
       let view = new ChannelView(channel);
       setActiveDocument(view.render(), "push");
 
-      new PlaylistsView().update(channel);
+      new ChannelSectionsView().update(channel);
     });
   }
 

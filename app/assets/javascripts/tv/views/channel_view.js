@@ -37,7 +37,7 @@ class ChannelView extends View {
           </stack>
           <heroImg src="${this.channel.poster_frame}" width="666" height="666" />
         </banner>
-        ${new PlaylistsView().template()}
+        ${new ChannelSectionsView().template()}
       </productBundleTemplate>
     </document>
     `;
