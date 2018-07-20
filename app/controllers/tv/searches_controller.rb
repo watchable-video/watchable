@@ -1,10 +1,10 @@
 class Tv::SearchesController < Tv::BaseController
 
   def new
-    # ,channel,playlist
     google = GoogleClient.new(@account.cloudkit_id)
     items = google.client.list_searches('snippet', max_results: 25, q: params[:q], type: "video,channel").items
 
+    ids = (100_000_000_000..100_0001_000_000).to_a
     @results = items.map do |data|
       if data.id.kind == "youtube#channel"
         result = VideoChannel.new(data)
@@ -13,7 +13,7 @@ class Tv::SearchesController < Tv::BaseController
       end
 
       result.tap do |r|
-        r.id = (100_000_000_000..100_000_001_000).to_a.sample
+        r.id = ids.sample
       end
     end
   end
