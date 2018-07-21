@@ -41,7 +41,7 @@ class ProcessVideoJob < ApplicationJob
         "mp4",
         "--output",
         "#{path}",
-        "#{video.youtube_id}",
+        "'#{video.youtube_id}'",
       ]
 
       if system(command.join(" ")) && File.exist?(path)
