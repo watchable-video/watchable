@@ -2,8 +2,6 @@ class Video < ApplicationRecord
 
   after_create_commit :process_video_file
 
-  has_one_attached :video_file
-
   def self.new_from_api(account, data)
     youtube_id = data.id
     if data.try(:snippet).try(:resource_id).try(:video_id)
