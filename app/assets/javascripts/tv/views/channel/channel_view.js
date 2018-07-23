@@ -3,13 +3,7 @@ class ChannelView extends View {
   constructor(channel) {
     super();
     this.channel = channel;
-    this.uploads = new ChannelSectionView("Uploads", channel);
-  }
-
-  highlight(event) {
-    const eventHelper = new EventHelper(event);
-    const remaining = eventHelper.remaining();
-    this.uploads.loadMore(remaining);
+    this.uploadsSection = this._uploads()
   }
 
   template() {
@@ -45,11 +39,16 @@ class ChannelView extends View {
           <heroImg src="${this.channel.poster_frame}" width="666" height="666" />
         </banner>
         <shelf>
-          ${this.uploads.template()}
+          ${this.uploadsSection.template()}
         </shelf>
       </productBundleTemplate>
     </document>
     `;
   }
 
+  _uploads() {
+    const uri = url("playlist_videos");
+    uri.addSearch({playlist_id: this.channel.uploadsPlaylist()});
+    return new ChannelSectionView("Uploads", uri);
+  }
 }

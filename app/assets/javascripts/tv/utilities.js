@@ -29,7 +29,6 @@ currentDocument = function() {
 appendTo = function(id, markup) {
   const element = currentDocument().getElementById(id);
   if (element) {
-    console.log(markup);
     element.insertAdjacentHTML("beforeend", markup)
   }
 }

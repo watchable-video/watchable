@@ -8,22 +8,23 @@ class Pager {
 
   loadMore(remaining) {
     this.remaining = remaining;
-    if (this._needsMore()) {
-      const requestURI = this.uri;
-      if (this.nextPageToken) {
-        requestURI.addSearch({
-          page_token: this.nextPageToken
+
+    return new Promise((resolve, reject) => {
+      if (this._needsMore()) {
+        request("GET", this._requestURI()).then((response) => {
+          const json = JSON.parse(response);
+          this.nextPageToken = json.next_page_token;
+          resolve(json);
+        }).catch(function(error) {
+          reject(error);
         });
+      } else {
+        reject()
       }
-      request("GET", requestURI).then((response) => {
-        const json = JSON.parse(response);
-        this.nextPageToken = json.next_page_token;
-      });
-    }
+    });
   }
 
   _needsMore() {
-
     if (!this.firstRequest) {
       if (this.remaining > 20) {
         return false;
@@ -31,7 +32,7 @@ class Pager {
       if (!this.nextPageToken) {
         return false;
       }
-      if (data.requests[uri.path()]) {
+      if (data.requests[this.uri.path()]) {
         return false
       }
     }
@@ -41,5 +42,14 @@ class Pager {
     return true;
   }
 
+  _requestURI() {
+    if (this.nextPageToken) {
+      this.uri.removeSearch("page_token");
+      this.uri.addSearch({
+        page_token: this.nextPageToken
+      });
+    }
+    return this.uri;
+  }
 
 }

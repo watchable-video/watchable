@@ -23,7 +23,6 @@ gem "dalli"
 gem "googleauth"
 gem "google-api-client", "= 0.19.8"
 gem "aws-sdk-s3", require: false
-gem "bootsnap", require: false
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
