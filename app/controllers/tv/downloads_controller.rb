@@ -4,7 +4,7 @@ class Tv::DownloadsController < Tv::BaseController
 
   def new
     DownloadVideoJob.perform_later(params[:url])
-    render text: 'Download Started!'
+    render plain: 'Download started!'
   end
 
 end
