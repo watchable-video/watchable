@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   namespace :tv do
     get :app
     resource :search
+    resources :downloads, only: [:new]
     resources :activation_tokens
     resource :authenticate do
       member do
