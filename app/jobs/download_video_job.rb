@@ -16,7 +16,7 @@ class DownloadVideoJob < ApplicationJob
   private
 
     def filename
-      Digest::SHA1.hexdigest(url).ext("mp4")
+      Digest::SHA1.hexdigest(url).ext("mkv")
     end
 
     def destination_path
