@@ -5,8 +5,6 @@ set :branch, "master"
 set :application, "watchable"
 set :repo_url, "git@github.com:watchable-video/#{fetch(:application)}.git"
 set :deploy_to, "/srv/apps/#{fetch(:application)}"
-set :rbenv_type, :system
-set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 set :bundle_jobs, 4
 set :log_level, :warn
 
@@ -58,7 +56,7 @@ namespace :app do
   task :export do
     on roles(:app) do
       within current_path do
-        execute :sudo, "/usr/local/rbenv/shims/foreman", :export, "--app #{fetch(:application)}", :systemd, "/etc/systemd/system", "--user app", "--root #{fetch(:deploy_to)}/current"
+        execute :sudo, :bundle, :exec, :foreman, :export, "--app #{fetch(:application)}", :systemd, "/etc/systemd/system", "--user app", "--root #{fetch(:deploy_to)}/current"
         execute :sudo, :systemctl, "daemon-reload"
         execute :sudo, :systemctl, :enable, "#{fetch(:application)}.target"
       end
